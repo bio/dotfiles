@@ -1,6 +1,9 @@
 [submodule "vim/bundle/vim-javascript"]
     path = vim/bundle/vim-javascript
-    url = http://github.com/pangloss/vim-javascript.git
+    url = https://github.com/pangloss/vim-javascript.git
 [submodule "vim/bundle/mac-classic"]
 	path = vim/bundle/mac-classic
-	url = git@github.com:nelstrom/vim-mac-classic-theme.git
+	url = https://github.com/nelstrom/vim-mac-classic-theme.git
+[submodule "vim/bundle/ack.vim"]
+	path = vim/bundle/ack.vim
+	url = https://github.com/mileszs/ack.vim.git
