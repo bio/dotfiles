@@ -100,3 +100,7 @@ nmap <D-]> >>
 vmap <D-[> <gv
 vmap <D-]> >gv
 
+menu Encoding.utf-8 :e ++enc=utf-8<CR>
+menu Encoding.windows-1251 :e ++enc=cp1251<CR>
+menu Encoding.koi8-r :e ++enc=koi8-r<CR>
+
