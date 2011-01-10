@@ -1,6 +1,6 @@
 ## Installation
 
-    mkdir -p ~/tmp/vim/swap
+    mkdir -p ~/tmp/vim
     cd ~
     git clone https://bio@github.com/bio/dotfiles.git
     cd dotfiles

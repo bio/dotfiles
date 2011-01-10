@@ -26,7 +26,7 @@ endif
 
 
 set backupdir=$HOME/tmp/vim
-set directory=$HOME/tmp/vim/swap
+set directory=$HOME/tmp/vim
 
 set tabstop=4
 set softtabstop=4
@@ -49,6 +49,11 @@ endif
 filetype on
 syntax on
 
+" Don't write backup file if vim is being called by "crontab -e"
+au BufWrite /private/tmp/crontab.* set nowritebackup
+" Don't write backup file if vim is being called by "chpass"
+au BufWrite /private/etc/pw.* set nowritebackup
+
 " Turn ON autoindent
 "set autoindent
 
@@ -56,7 +61,7 @@ syntax on
 let mapleader = ","
 nmap <silent> <leader>l :set list!<CR>
 nmap <silent> <leader>w :set wrap!<CR>
- 
+
 " use :w!! to write to a file using sudo if you forgot to 'sudo vim file'
 cmap w!! %!sudo tee > /dev/null %
 
