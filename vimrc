@@ -84,7 +84,7 @@ nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 vmap _$ :call Preserve("s/\\s\\+$//e")<CR>
 
 " Automatically remove trailing whitespace
-autocmd BufWritePre *.php,*.py,*.js :call Preserve("%s/\\s\\+$//e")
+autocmd BufWritePre *.php,*.py,*.js,*.md,*.txt :call Preserve("%s/\\s\\+$//e")
 
 " Shortcuts for visual selections
 nmap gV `[v`]

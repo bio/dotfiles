@@ -9,3 +9,11 @@
 
     ln -s ~/dotfiles/vimrc ~/.vimrc
     ln -s ~/dotfiles/vim ~/.vim
+
+### Adding Plugin Bundles
+
+    cd ~/dotfiles
+    git submodule add https://github.com/bio/vim-mac-classic-theme.git vim/bundle/vim-mac-classic-theme
+    git add .
+    git ci -m "add Mac Classic theme"
+
