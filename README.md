@@ -8,6 +8,7 @@
     git submodule update
 
     ln -s ~/dotfiles/vimrc ~/.vimrc
+    ln -s ~/dotfiles/gvimrc ~/.gvimrc
     ln -s ~/dotfiles/vim ~/.vim
 
 ### Adding Plugin Bundles
