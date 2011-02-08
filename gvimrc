@@ -14,10 +14,10 @@ colorscheme topfunky-light
 set guioptions+=c
 
 macmenu &File.New\ Tab key=<Nop>
-map <D-t> <Plug>PeepOpen
-imap <D-t> <Esc><Plug>PeepOpen
+map <D-t> :CommandT<CR>
+imap <D-t> <Esc>:CommandT<CR>
 
-" next/prev buffer
+" Next/prev buffer
 macmenu Window.Select\ Next\ Tab key=<Nop>
 map <silent> <D-}> :bnext<CR>
 imap <silent> <D-}> <Esc>:bnext<CR>

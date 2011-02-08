@@ -15,6 +15,7 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
+set nojoinspaces
 set hidden
 " Use the same symbols as TextMate for tabstops and EOLs
 set listchars=tab:▸\ ,eol:¬
@@ -35,14 +36,18 @@ set laststatus=2
 
 " Show options as list when switching buffers etc
 set wildmenu
+set wildmode=longest,full
 " Patterns to ignore during file-navigation
 set wildignore+=*.o,.hg,.git
+
+" Moise in all modes
+set mouse=a
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
+    syntax on
+    set hlsearch
 endif
 
 " allow backspacing over everything in insert mode
@@ -100,6 +105,7 @@ let mapleader = ","
 nmap <silent> <leader>l :set list!<CR>
 nmap <silent> <leader>w :set wrap!<CR>
 nmap <silent> <leader>n :silent :nohlsearch<CR>
+nmap <ESC><ESC> :silent :nohlsearch<CR>
 
 " use :w!! to write to a file using sudo if you forgot to 'sudo vim file'
 cmap w!! %!sudo tee > /dev/null %
@@ -145,10 +151,6 @@ nmap <D-[> <<
 nmap <D-]> >>
 vmap <D-[> <gv
 vmap <D-]> >gv
-
-" Show all buffers and select buffer by number 
-nmap <leader>bb :ls<CR>:e #
-vmap <leader>bb :ls<CR>:e #
 
 menu Encoding.utf-8 :e ++enc=utf-8<CR>
 menu Encoding.windows-1251 :e ++enc=cp1251<CR>

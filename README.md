@@ -18,3 +18,12 @@
     git add .
     git ci -m "add Mac Classic theme"
 
+#### Command-T
+
+    cd ~/dotfiles/vim/bundle/command-t/ruby/command-t
+    ruby extconf.rb
+    make
+
+Generate help tags inside Vim (Pathogen related):
+
+    :call pathogen#helptags()

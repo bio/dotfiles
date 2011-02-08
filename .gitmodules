@@ -1,8 +1,8 @@
 [submodule "vim/bundle/vim-javascript"]
     path = vim/bundle/vim-javascript
     url = https://github.com/pangloss/vim-javascript.git
-[submodule "vim/bundle/mac-classic"]
-	path = vim/bundle/mac-classic
+[submodule "vim/bundle/mac-classic-theme"]
+	path = vim/bundle/mac-classic-theme
 	url = https://github.com/nelstrom/vim-mac-classic-theme.git
 [submodule "vim/bundle/ack.vim"]
 	path = vim/bundle/ack.vim
@@ -13,9 +13,12 @@
 [submodule "vim/bundle/bufexplorer"]
 	path = vim/bundle/bufexplorer
 	url = https://github.com/vim-scripts/bufexplorer.zip.git
-[submodule "vim/bundle/vim-fuzzyfinder"]
-	path = vim/bundle/vim-fuzzyfinder
-	url = https://github.com/vim-scripts/FuzzyFinder.git
 [submodule "vim/bundle/vim-l9"]
 	path = vim/bundle/vim-l9
 	url = https://github.com/vim-scripts/L9.git
+[submodule "vim/bundle/vim-fuzzyfinder"]
+	path = vim/bundle/vim-fuzzyfinder
+	url = https://github.com/vim-scripts/FuzzyFinder.git
+[submodule "vim/bundle/command-t"]
+	path = vim/bundle/command-t
+	url = https://github.com/wincent/Command-T.git
