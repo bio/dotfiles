@@ -148,7 +148,9 @@ map <silent> <leader>fc :FufRenewCache<CR>
 
 " Mappings for a recovering TextMate user indentation
 nmap <D-[> <<
+imap <D-[> <C-O><<
 nmap <D-]> >>
+imap <D-]> <C-O>>>
 vmap <D-[> <gv
 vmap <D-]> >gv
 
