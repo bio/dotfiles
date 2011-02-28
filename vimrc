@@ -105,7 +105,7 @@ let mapleader = ","
 nmap <silent> <leader>l :set list!<CR>
 nmap <silent> <leader>w :set wrap!<CR>
 nmap <silent> <leader>n :silent :nohlsearch<CR>
-nmap <ESC><ESC> :silent :nohlsearch<CR>
+"nmap <silent> <ESC><ESC> :silent :nohlsearch<CR>
 
 " use :w!! to write to a file using sudo if you forgot to 'sudo vim file'
 cmap w!! %!sudo tee > /dev/null %
@@ -154,12 +154,18 @@ imap <D-]> <C-O>>>
 vmap <D-[> <gv
 vmap <D-]> >gv
 
+" Command-T
+let g:CommandTMaxFiles=20000
+" flush path cache and rescan dir
+nmap <silent> <C-f> :CommandTFlush<CR>
+imap <silent> <C-f> :CommandTFlush<CR>
+
 menu Encoding.utf-8 :e ++enc=utf-8<CR>
 menu Encoding.windows-1251 :e ++enc=cp1251<CR>
 
 " allow cyrillic into Normal mode 
 set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,
         \фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz,
-        \ХЪ\\/ЖЭБЮ\\,;{}\\|:\\"<>?,
-        \хъжэбю.;[];'\\,./,
-        \"№;:?;@#$^&
+        \ХЪЖЭБЮ;{}:\\"<>,
+        \хъжэбю;[];'\\,.,
+        \№;#
