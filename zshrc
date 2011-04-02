@@ -2,8 +2,8 @@
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:$PATH
 
 # locale
-export LC_ALL=ru_RU.UTF-8
-export LANG=ru_RU.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # php
 export PATH=/opt/php/bin:/opt/php/sbin:/opt/php/lib/php:$PATH
