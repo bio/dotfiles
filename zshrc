@@ -68,6 +68,13 @@ LS_COLORS='no=00:fi=00:di=00;34:ln=01;34:pi=40;33:so=01;35:bd=40;33;01:cd=40;33;
 
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
+gdict () (
+# http://code.google.com/p/dict-lookup-chrome-ext/source/browse/trunk/extension/lookup.js
+# http://www.google.com/dictionary?langpair=en|ru&q=chemist&hl=ru&aq=f
+# http://www.zsh.org/mla/users/2006/msg00063.html 
+    curl --silent "http://www.google.com/dictionary?langpair=en|ru&q=$1&hl=ru&aq=f" | grep dct-tt | sed /'class=\"dct-e/d' | sed '/<a\ href/d' | sed 's/<span class="dct-tt">//g' |sed 's/<\/span>//' | sed '/<span /d' | head -n 3
+)
+
 umask 002
 
 # Local Settings
