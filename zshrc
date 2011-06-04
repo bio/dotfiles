@@ -38,9 +38,6 @@ esac
 PS1=$'%{\e[01;32m%}%n%{\e[00;32m%}@%m%{\e[00m%} %{\e[01;34m%}%0~%{\e[00;30m%} %# %{\e[00m%}'
 
 ### Aliases
-alias ls='ls -FG'
-alias la='ls -aFG'
-alias ll='ls -laG'
 alias diff='colordiff'
 
 
@@ -76,6 +73,23 @@ gdict () (
 )
 
 umask 002
+
+# OS specific stuff
+os=$(uname)
+case ${os} in
+    Darwin)
+        alias ls='ls -FG'
+        alias la='ls -aFG'
+        alias ll='ls -laG'
+        ;;
+
+    Linux)
+        alias ls='ls -F --color=auto'
+        alias la='ls -aF --color=auto'
+        alias ll='ls -la --color=auto'
+        ;;
+esac
+
 
 # Local Settings
 if [[ -s $HOME/.zshrc_local ]] ; then source $HOME/.zshrc_local ; fi
