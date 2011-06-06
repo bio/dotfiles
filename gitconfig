@@ -1,0 +1,20 @@
+[user]
+    name = Valery Viktorovsky
+	email = viktorovsky@gmail.com
+[alias]
+     co = checkout
+     ci = commit
+     st = status
+     last = log -1 HEAD
+     ds = diff --stat
+     ca = diff --cached
+     cs = diff --cached --stat
+
+[pager]
+     diff =
+
+[color]
+     ui = auto
+
+[core]
+	autocrlf = true
