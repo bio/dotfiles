@@ -17,4 +17,5 @@
      ui = auto
 
 [core]
-	autocrlf = true
+	autocrlf = input
+	safecrlf = true
