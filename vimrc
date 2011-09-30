@@ -154,6 +154,24 @@ imap <D-]> <C-O>>>
 vmap <D-[> <gv
 vmap <D-]> >gv
 
+" Commenting
+vmap <D-/> \\gv
+map <D-/> \\\
+
+" ctrl-a and ctrl-e move the cursor to the start and end of the line 
+" without leaving insert mode
+" http://stackoverflow.com/questions/6926034
+imap <C-a> <C-o>I
+imap <C-e> <C-r>=InsCtrlE()<cr>
+function! InsCtrlE()
+    try
+        norm! i
+        return "\<C-o>A"
+    catch
+        return "\<C-e>"
+    endtry
+endfunction
+
 " Command-T
 let g:CommandTMaxFiles=20000
 " flush path cache and rescan dir
