@@ -17,6 +17,9 @@ macmenu &File.New\ Tab key=<Nop>
 map <D-t> :CommandT<CR>
 imap <D-t> <Esc>:CommandT<CR>
 
+macmenu &File.Close key=<nop>
+macmenu &File.Close\ Window key=<nop>
+
 " Next/prev buffer
 macmenu Window.Select\ Next\ Tab key=<Nop>
 map <silent> <D-}> :bnext<CR>

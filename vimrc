@@ -11,6 +11,7 @@ set directory=$HOME/tmp/vim
 
 " Disable visual error flash and the error beep
 set visualbell t_vb=
+set number
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
