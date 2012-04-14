@@ -39,7 +39,7 @@ set laststatus=2
 set wildmenu
 set wildmode=longest,full
 " Patterns to ignore during file-navigation
-set wildignore+=*.o,.hg,.git
+set wildignore+=*.o,*/.git/*,*/.hg/*,*/.svn/*
 
 " Moise in all modes
 set mouse=a
@@ -174,10 +174,14 @@ function! InsCtrlE()
 endfunction
 
 " Command-T
-let g:CommandTMaxFiles=20000
+""let g:CommandTMaxFiles=20000
 " flush path cache and rescan dir
-nmap <silent> <C-f> :CommandTFlush<CR>
-imap <silent> <C-f> :CommandTFlush<CR>
+""nmap <silent> <C-f> :CommandTFlush<CR>
+""imap <silent> <C-f> :CommandTFlush<CR>
+
+" CtrlP
+let g:ctrlp_max_files = 20000
+let g:ctrlp_cache_dir = $HOME.'/tmp/vim/ctrlp'
 
 menu Encoding.utf-8 :e ++enc=utf-8<CR>
 menu Encoding.windows-1251 :e ++enc=cp1251<CR>

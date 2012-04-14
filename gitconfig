@@ -1,6 +1,6 @@
 [user]
     name = Valery Viktorovsky
-	email = viktorovsky@gmail.com
+    email = viktorovsky@gmail.com
 [alias]
      co = checkout
      ci = commit
@@ -17,5 +17,5 @@
      ui = auto
 
 [core]
-	autocrlf = input
-	safecrlf = true
+    autocrlf = input
+    safecrlf = true
