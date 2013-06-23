@@ -3,8 +3,8 @@
 set nocompatible
 
 " Store plugins to its own private directory in .vim/bundle
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+execute pathogen#infect()
 
 set backupdir=$HOME/tmp/vim
 set directory=$HOME/tmp/vim
