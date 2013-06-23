@@ -10,7 +10,7 @@ export PATH=/opt/php/bin:/opt/php/sbin:/opt/php/lib/php:$PATH
 
 #mysql/psql pagging support
 export PAGER=less
-export LESS="-iMSx4 -FX"
+export LESS="-iMx4 -FX"
 
 ### history related stuff.
 export HISTSIZE=5000

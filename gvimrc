@@ -16,8 +16,6 @@ set guioptions+=c
 macmenu &File.New\ Tab key=<Nop>
 "map <D-t> :CommandT<CR>
 "imap <D-t> <Esc>:CommandT<CR>
-map <D-t> :CtrlP<CR>
-imap <D-t> <Esc>:CtrlP<CR>
 
 macmenu &File.Close key=<nop>
 macmenu &File.Close\ Window key=<nop>

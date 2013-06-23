@@ -9,6 +9,7 @@
      ds = diff --stat
      ca = diff --cached
      cs = diff --cached --stat
+     hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
 
 [pager]
      diff =
@@ -19,3 +20,8 @@
 [core]
     autocrlf = input
     safecrlf = true
+    pager = less -R
+[credential]
+	helper = osxkeychain
+[push]
+	default = simple

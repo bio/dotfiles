@@ -146,6 +146,8 @@ endif
 map <silent> <leader>fb :FufBuffer!<CR>
 map <silent> <leader>ff :FufFile!<CR>
 map <silent> <leader>fc :FufRenewCache<CR>
+map <silent> <leader>fm :FufMruFile<CR>
+map <silent> <leader>b :FufBuffer!<CR>
 
 " Mappings for a recovering TextMate user indentation
 nmap <D-[> <<
@@ -174,14 +176,12 @@ function! InsCtrlE()
 endfunction
 
 " Command-T
-""let g:CommandTMaxFiles=20000
+let g:CommandTMaxFiles=20000
+nmap <silent> <leader>t :CommandT<CR>
+imap <silent> <leader>t <Esc>:CommandT<CR>
 " flush path cache and rescan dir
-""nmap <silent> <C-f> :CommandTFlush<CR>
-""imap <silent> <C-f> :CommandTFlush<CR>
-
-" CtrlP
-let g:ctrlp_max_files = 20000
-let g:ctrlp_cache_dir = $HOME.'/tmp/vim/ctrlp'
+nmap <silent> <leader>f :CommandTFlush<CR>
+imap <silent> <leader>f <Esc>:CommandTFlush<CR>
 
 menu Encoding.utf-8 :e ++enc=utf-8<CR>
 menu Encoding.windows-1251 :e ++enc=cp1251<CR>
