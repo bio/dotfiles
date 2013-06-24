@@ -26,6 +26,8 @@
     ruby extconf.rb
     make
 
-Generate help tags inside Vim (Pathogen related):
+#### Updating
 
-    :call pathogen#helptags()
+    cd ~/dotfiles
+    git submodule foreach git pull
+

@@ -10,12 +10,6 @@
 [submodule "vim/bundle/bufexplorer"]
 	path = vim/bundle/bufexplorer
 	url = https://github.com/vim-scripts/bufexplorer.zip.git
-[submodule "vim/bundle/vim-l9"]
-	path = vim/bundle/vim-l9
-	url = https://github.com/vim-scripts/L9.git
-[submodule "vim/bundle/vim-fuzzyfinder"]
-	path = vim/bundle/vim-fuzzyfinder
-	url = https://github.com/vim-scripts/FuzzyFinder.git
 [submodule "vim/bundle/vim-commentary"]
 	path = vim/bundle/vim-commentary
 	url = http://github.com/tpope/vim-commentary.git
