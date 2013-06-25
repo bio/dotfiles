@@ -26,7 +26,7 @@
     ruby extconf.rb
     make
 
-#### Updating
+## Updating
 
     cd ~/dotfiles
     git submodule foreach git pull
