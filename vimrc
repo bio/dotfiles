@@ -98,6 +98,10 @@ endif
 
 filetype on
 
+" Filetype detection extensions
+au BufNewFile,BufRead *.md set filetype=markdown
+au BufNewFile,BufRead *.rc set filetype=conf
+
 " Highlight matching parenthesis (brackets)
 set showmatch
 
