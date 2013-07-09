@@ -51,7 +51,7 @@ if &t_Co > 2 || has("gui_running")
     set hlsearch
 endif
 
-" allow backspacing over everything in insert mode
+" Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
 if has("autocmd")
@@ -145,6 +145,13 @@ if has("autocmd")
         autocmd BufWritePost .vimrc source ~/.vimrc
     augroup END
 endif
+
+" Ack
+" Set a mark then search
+nmap <leader>a mA:Ack<space>
+" Set a mark then pull word under cursor
+nmap <leader>za mA:Ack "<C-r>=expand("<cword>")<cr>"
+nmap <leader>zA mA:Ack "<C-r>=expand("<cWORD>")<cr>"
 
 " Fuzzy Finder
 map <silent> <leader>fb :FufBuffer!<CR>
