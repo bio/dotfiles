@@ -55,9 +55,6 @@ endif
 set backspace=indent,eol,start
 
 if has("autocmd")
-    " For all text files set 'textwidth' to 79 characters.
-    autocmd FileType text setlocal textwidth=79
-
     autocmd FileType ruby setlocal ts=2 sts=2 sw=2 expandtab
     autocmd FileType css setlocal ts=4 sts=4 sw=4 noexpandtab
     autocmd FileType markdown setlocal wrap linebreak nolist
