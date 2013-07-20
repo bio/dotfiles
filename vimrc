@@ -26,8 +26,11 @@ NeoBundleLazy 'sjl/gundo.vim', { 'autoload' : {
     \ 'commands' : 'GundoToggle'
     \ }}
 
-" Non github repos
 NeoBundle 'git://git.wincent.com/command-t.git'
+
+NeoBundle 'gist:topfunky/424448', {
+    \ 'name': 'topfunky-light.vim',
+    \ 'script_type': 'colors'}
 
 " Enable file type detection.
 filetype plugin indent on
