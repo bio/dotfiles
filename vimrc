@@ -2,10 +2,6 @@
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-" Store plugins to its own private directory in .vim/bundle
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-execute pathogen#infect()
-
 set backupdir=$HOME/tmp/vim
 set directory=$HOME/tmp/vim
 

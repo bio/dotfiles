@@ -14,12 +14,7 @@
     ln -s ~/dotfiles/ackrc ~/.ackrc
     ln -s ~/dotfiles/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
 
-### Adding Plugin Bundles
-
-    cd ~/dotfiles
-    git submodule add https://github.com/bio/vim-mac-classic-theme.git vim/bundle/vim-mac-classic-theme
-    git add .
-    git ci -m "add Mac Classic theme"
+### Configure Plugins
 
 #### Command-T
 
