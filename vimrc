@@ -2,6 +2,39 @@
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
+" Store plugins to its own private directory in .vim/bundle
+"runtime bundle/vim-pathogen/autoload/pathogen.vim
+"execute pathogen#infect()
+
+if has('vim_starting')
+    set runtimepath+=~/dotfiles/vim/bundle/neobundle.vim/
+endif
+call neobundle#rc(expand('~/dotfiles/vim/bundle/'))
+
+" Let NeoBundle manage NeoBundle
+NeoBundleFetch 'Shougo/neobundle.vim', '', 'default'
+
+NeoBundle 'anyakichi/vim-surround', {
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['n', '<Plug>Dsurround'], ['n', '<Plug>Csurround'],
+    \     ['n', '<Plug>Ysurround'], ['n', '<Plug>YSurround']
+    \ ]}}
+
+NeoBundleLazy 'kana/vim-textobj-user'
+NeoBundleLazy 'sjl/gundo.vim', { 'autoload' : {
+    \ 'commands' : 'GundoToggle'
+    \ }}
+
+" Non github repos
+NeoBundle 'git://git.wincent.com/command-t.git'
+
+" Enable file type detection.
+filetype plugin indent on
+
+" Installation check.
+NeoBundleCheck
+
 set backupdir=$HOME/tmp/vim
 set directory=$HOME/tmp/vim
 
@@ -67,7 +100,7 @@ if has("autocmd")
     " Use the default filetype settings, so that mail gets 'tw' set to 72,
     " 'cindent' is on in C files, etc.
     " Also load indent files, to automatically do language-dependent indenting.
-    filetype plugin indent on
+    " filetype plugin indent on
 
     " ??? Put these in an autocmd group, so that we can delete them easily.
     augroup vimrcEx
