@@ -21,7 +21,8 @@
     autocrlf = input
     safecrlf = true
     pager = less -R
+    editor = /usr/bin/vim
 [credential]
-	helper = osxkeychain
+    helper = osxkeychain
 [push]
-	default = simple
+    default = simple

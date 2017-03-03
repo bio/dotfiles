@@ -5,9 +5,6 @@ export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:$PATH
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# php
-export PATH=/opt/php/bin:/opt/php/sbin:/opt/php/lib/php:$PATH
-
 #mysql/psql pagging support
 export PAGER=less
 export LESS="-iMx4 -FX"
