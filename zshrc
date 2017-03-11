@@ -34,13 +34,13 @@ esac
 # Show branch name
 setopt prompt_subst
 autoload -Uz vcs_info
-zstyle ':vcs_info:*' actionformats '(%F{cyan}%b%f|%F{magenta}%a%f)'
-zstyle ':vcs_info:*' formats '(%F{cyan}%b%f)'
+zstyle ':vcs_info:*' actionformats '(%F{cyan}%b%f|%F{magenta}%a%f) '
+zstyle ':vcs_info:*' formats '(%F{cyan}%b%f) '
 zstyle ':vcs_info:*' enable git
 precmd () { vcs_info }
 
 # Set prompt with branch name (%n@%m:%~ ${vcs_info_msg_0_} %# ')
-PS1='%F{green}%B%n%b%f@%F{green}%m%f:%F{blue}%1~%f ${vcs_info_msg_0_} %# '
+PS1='%F{green}%B%n%b%f@%F{green}%m%f:%F{blue}%1~%f ${vcs_info_msg_0_}%# '
 
 # Aliases
 alias diff='colordiff'
