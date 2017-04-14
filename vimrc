@@ -234,3 +234,8 @@ set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNO
         \ХЪЖЭБЮ;{}:\\"<>,
         \хъжэбю;[];'\\,.,
         \№;#
+
+" local settings
+if filereadable(glob("~/.vimrc.local"))
+    source ~/.vimrc_local
+endif
