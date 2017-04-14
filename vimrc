@@ -236,6 +236,6 @@ set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNO
         \№;#
 
 " local settings
-if filereadable(glob("~/.vimrc.local"))
+if filereadable(glob("~/.vimrc_local"))
     source ~/.vimrc_local
 endif
