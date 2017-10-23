@@ -93,7 +93,7 @@ if has("autocmd")
     autocmd FileType markdown setlocal wrap linebreak nolist
 
     " Automatically remove trailing whitespace
-    autocmd BufWritePre *.php,*.py,*.css,*.js,*.md,*.txt :call Preserve("%s/\\s\\+$//e")
+    autocmd BufWritePre *.php,*.py,*.css,*.scss,*.js,*.md,*.txt :call Preserve("%s/\\s\\+$//e")
 
     " Don't write backup file if vim is being called by "crontab -e"
     autocmd BufWrite /private/tmp/crontab.* set nowritebackup
