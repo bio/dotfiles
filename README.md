@@ -18,7 +18,7 @@
 
 #### Command-T
 
-    cd ~/dotfiles/vim/bundle/command-t/ruby/command-t
+    cd ~/dotfiles/vim/bundle/command-t/ruby/command-t/ext/command-t
     ruby extconf.rb
     make
 
