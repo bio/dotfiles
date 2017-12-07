@@ -13,6 +13,8 @@
     ln -s ~/dotfiles/gitconfig ~/.gitconfig
     ln -s ~/dotfiles/ackrc ~/.ackrc
     ln -s ~/dotfiles/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
+    ln -s ~/dotfiles/psqlrc ~/.psqlrc
+    touch ~/.psqlrc_local
 
 ### Configure Plugins
 

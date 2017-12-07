@@ -1,0 +1,20 @@
+\set QUIET yes
+
+\set PROMPT1 '%[%033[1;32m%]%n%[%033[0m%]@%[%033[0;32m%]%/%[%033[0m%] %R%#%x '
+
+-- when postgres is waiting for more input
+\set PROMPT2 '%[%033[1;32m%]%n%[%033[0m%]@%[%033[0;32m%]%/%[%033[0m%] %R%#%x '
+
+\set COMP_KEYWORD_CASE upper
+
+\pset null '(NULL)'
+
+-- Use table format by default but switch to expanded table format when
+-- there's a lot of data
+\x auto
+
+\timing
+
+\include_relative ~/.psqlrc_local
+
+\unset QUIET
