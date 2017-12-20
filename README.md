@@ -20,7 +20,7 @@
 
 #### Command-T
 
-    cd ~/dotfiles/vim/bundle/command-t/ruby/command-t/ext/command-t
+    cd ~/dotfiles/vim/bundles/repos/github.com/wincent/command-t/ruby/command-t/ext/command-t
     ruby extconf.rb
     make
 

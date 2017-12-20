@@ -1,42 +1,39 @@
 " Use Vim settings, rather then Vi settings.
 " This must be first, because it changes other options as a side effect.
-set nocompatible
-
-" Store plugins to its own private directory in .vim/bundle
-"runtime bundle/vim-pathogen/autoload/pathogen.vim
-"execute pathogen#infect()
-
-if has('vim_starting')
-    set runtimepath+=~/dotfiles/vim/bundle/neobundle.vim/
+if &compatible
+  set nocompatible
 endif
-call neobundle#rc(expand('~/dotfiles/vim/bundle/'))
 
-" Let NeoBundle manage NeoBundle
-NeoBundleFetch 'Shougo/neobundle.vim', '', 'default'
+set runtimepath+=~/dotfiles/vim/bundles/repos/github.com/Shougo/dein.vim
 
-NeoBundle 'anyakichi/vim-surround', {
-    \ 'autoload' : {
-    \   'mappings' : [
-    \     ['n', '<Plug>Dsurround'], ['n', '<Plug>Csurround'],
-    \     ['n', '<Plug>Ysurround'], ['n', '<Plug>YSurround']
-    \ ]}}
+if dein#load_state('~/dotfiles/vim/bundles')
+  call dein#begin('~/dotfiles/vim/bundles')
 
-NeoBundleLazy 'kana/vim-textobj-user'
-NeoBundleLazy 'sjl/gundo.vim', { 'autoload' : {
-    \ 'commands' : 'GundoToggle'
-    \ }}
+  " Let dein manage dein
+  call dein#add('~/dotfiles/vim/bundles/repos/github.com/Shougo/dein.vim')
 
-NeoBundle 'git://git.wincent.com/command-t.git'
+  call dein#add('wincent/command-t', {
+  \   'build':
+  \     'sh -c "cd ruby/command-t/ext/command-t && ruby extconf.rb && make"'
+  \ })
 
-NeoBundle 'gist:topfunky/424448', {
-    \ 'name': 'topfunky-light.vim',
-    \ 'script_type': 'colors'}
+  call dein#add('https://gist.github.com/topfunky/424448', {
+  \   'name': 'topfunky-light.vim',
+  \   'script_type': 'colors'
+  \ })
+   
+  call dein#end()
+  call dein#save_state()
+endif
 
 " Enable file type detection.
 filetype plugin indent on
+syntax enable
 
-" Installation check.
-NeoBundleCheck
+" install not installed plugins on startup.
+if dein#check_install()
+  call dein#install()
+endif
 
 set backupdir=$HOME/tmp/vim
 set directory=$HOME/tmp/vim
@@ -79,51 +76,51 @@ set mouse=a
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
-    syntax on
-    set hlsearch
+  syntax enable
+  set hlsearch
 endif
 
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
 if has("autocmd")
-    autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
-    autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
-    autocmd FileType scss setlocal ts=2 sts=2 sw=2 expandtab
-    autocmd FileType markdown setlocal wrap linebreak nolist
+  autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType scss setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType markdown setlocal wrap linebreak nolist
 
-    " Automatically remove trailing whitespace
-    autocmd BufWritePre *.php,*.py,*.css,*.scss,*.js,*.md,*.txt :call Preserve("%s/\\s\\+$//e")
+  " Automatically remove trailing whitespace
+  autocmd BufWritePre *.php,*.py,*.css,*.scss,*.js,*.md,*.txt :call Preserve("%s/\\s\\+$//e")
 
-    " Don't write backup file if vim is being called by "crontab -e"
-    autocmd BufWrite /private/tmp/crontab.* set nowritebackup
-    " Don't write backup file if vim is being called by "chpass"
-    autocmd BufWrite /private/etc/pw.* set nowritebackup
+  " Don't write backup file if vim is being called by "crontab -e"
+  autocmd BufWrite /private/tmp/crontab.* set nowritebackup
+  " Don't write backup file if vim is being called by "chpass"
+  autocmd BufWrite /private/etc/pw.* set nowritebackup
 
-    " Enable file type detection.
-    " Use the default filetype settings, so that mail gets 'tw' set to 72,
-    " 'cindent' is on in C files, etc.
-    " Also load indent files, to automatically do language-dependent indenting.
-    " filetype plugin indent on
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  " filetype plugin indent on
 
-    " ??? Put these in an autocmd group, so that we can delete them easily.
-    augroup vimrcEx
-    au!
+  " ??? Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
 
-    " When editing a file, always jump to the last known cursor position.
-    " Don't do it when the position is invalid or when inside an event handler
-    " (happens when dropping a file on gvim).
-    " Also don't do it when the mark is in the first line, that is the default
-    " position when opening a file.
-    autocmd BufReadPost *
-      \ if line("'\"") > 1 && line("'\"") <= line("$") |
-      \   exe "normal! g`\"" |
-      \ endif
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  " Also don't do it when the mark is in the first line, that is the default
+  " position when opening a file.
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
 
-    augroup END
+  augroup END
 else
-	" always set autoindenting on
-    set autoindent
+  " always set autoindenting on
+  set autoindent
 endif
 
 filetype on
@@ -148,15 +145,15 @@ cmap w!! %!sudo tee > /dev/null %
 
 " Preserves the state
 function! Preserve(command)
-    " Preparation: save last search, and cursor position.
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    " Do the business:
-    execute a:command
-    " Clean up: restore previous search history, and cursor position
-    let @/=_s
-    call cursor(l, c)
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  execute a:command
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
 endfunction
 
 " Strip trailing whitespaces
@@ -170,10 +167,10 @@ nmap gV `[v`]
 nmap <leader>v :e $MYVIMRC<CR>
 " Apply vim configurations without restarting
 if has("autocmd")
-    augroup myvimrchooks
-        au!
-        autocmd BufWritePost .vimrc source ~/.vimrc
-    augroup END
+  augroup myvimrchooks
+    au!
+    autocmd BufWritePost .vimrc source ~/.vimrc
+  augroup END
 endif
 
 " Ack
@@ -208,12 +205,12 @@ map <D-/> \\\
 imap <C-a> <C-o>I
 imap <C-e> <C-r>=InsCtrlE()<cr>
 function! InsCtrlE()
-    try
-        norm! i
-        return "\<C-o>A"
-    catch
-        return "\<C-e>"
-    endtry
+  try
+    norm! i
+    return "\<C-o>A"
+  catch
+    return "\<C-e>"
+  endtry
 endfunction
 
 " Command-T
@@ -230,12 +227,12 @@ menu Encoding.windows-1251 :e ++enc=cp1251<CR>
 
 " allow cyrillic into Normal mode 
 set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,
-        \фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz,
-        \ХЪЖЭБЮ;{}:\\"<>,
-        \хъжэбю;[];'\\,.,
-        \№;#
+  \фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz,
+  \ХЪЖЭБЮ;{}:\\"<>,
+  \хъжэбю;[];'\\,.,
+  \№;#
 
 " local settings
 if filereadable(glob("~/.vimrc_local"))
-    source ~/.vimrc_local
+  source ~/.vimrc_local
 endif
