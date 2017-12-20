@@ -21,7 +21,7 @@ if dein#load_state('~/dotfiles/vim/bundles')
   \   'name': 'topfunky-light.vim',
   \   'script_type': 'colors'
   \ })
-   
+
   call dein#end()
   call dein#save_state()
 endif
