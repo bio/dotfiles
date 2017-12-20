@@ -213,6 +213,9 @@ function! InsCtrlE()
   endtry
 endfunction
 
+" disable netrw
+let loaded_netrw = 0
+
 " Command-T
 let g:CommandTMaxFiles=40000
 let g:CommandTFileScanner='git'
