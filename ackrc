@@ -1,3 +1,4 @@
+--ignore-case
 --type-set=coffee=.coffee
 --type-add=coffee=.iced
 --type-set=stylus=.stylus,.styl

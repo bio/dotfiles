@@ -87,10 +87,11 @@ if has("autocmd")
   autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType scss setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType markdown setlocal wrap linebreak nolist
 
   " Automatically remove trailing whitespace
-  autocmd BufWritePre *.php,*.py,*.css,*.scss,*.js,*.md,*.txt :call Preserve("%s/\\s\\+$//e")
+  autocmd BufWritePre *.php,*.py,*.css,*.scss,*.js,*.md,*.txt,*.yml :call Preserve("%s/\\s\\+$//e")
 
   " Don't write backup file if vim is being called by "crontab -e"
   autocmd BufWrite /private/tmp/crontab.* set nowritebackup
@@ -133,7 +134,7 @@ au BufNewFile,BufRead *.rc set filetype=conf
 set showmatch
 
 " Toggles & Switches (Leader commands)
-let mapleader = ","
+nmap <space> <leader>
 nmap <silent> <leader>l :set list!<CR>
 nmap <silent> <leader>w :set wrap!<CR>
 nmap <silent> <leader>n :silent :nohlsearch<CR>
@@ -180,13 +181,6 @@ nmap <leader>a mA:Ack<space>
 nmap <leader>za mA:Ack "<C-r>=expand("<cword>")<cr>"
 nmap <leader>zA mA:Ack "<C-r>=expand("<cWORD>")<cr>"
 
-" Fuzzy Finder
-map <silent> <leader>fb :FufBuffer!<CR>
-map <silent> <leader>ff :FufFile!<CR>
-map <silent> <leader>fc :FufRenewCache<CR>
-map <silent> <leader>fm :FufMruFile<CR>
-map <silent> <leader>b :FufBuffer!<CR>
-
 " Mappings for a recovering TextMate user indentation
 nmap <D-[> <<
 imap <D-[> <C-O><<
@@ -221,9 +215,12 @@ let g:CommandTMaxFiles=40000
 let g:CommandTFileScanner='git'
 nmap <silent> <leader>t :CommandT<CR>
 imap <silent> <leader>t <Esc>:CommandT<CR>
+nmap <silent> <leader>ff :CommandT<CR>
+imap <silent> <leader>ff <Esc>:CommandT<CR>
+nmap <silent> <leader><Space> :CommandT<CR>
 " flush path cache and rescan dir
-nmap <silent> <leader>f :CommandTFlush<CR>
-imap <silent> <leader>f <Esc>:CommandTFlush<CR>
+nmap <silent> <leader>fc :CommandTFlush<CR>
+imap <silent> <leader>fc <Esc>:CommandTFlush<CR>
 
 menu Encoding.utf-8 :e ++enc=utf-8<CR>
 menu Encoding.windows-1251 :e ++enc=cp1251<CR>
