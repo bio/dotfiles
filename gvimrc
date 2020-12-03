@@ -4,7 +4,7 @@ set guioptions-=T
 set lines=59
 set columns=122
 
-set guifont=Monaco:h15
+set guifont=Monaco:h16
 set noantialias
 
 "colorscheme mac_classic

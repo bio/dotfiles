@@ -1,7 +1,4 @@
 --ignore-case
---type-set=coffee=.coffee
---type-add=coffee=.iced
---type-set=stylus=.stylus,.styl
 --type-set=sass=.sass,.scss
 --type-set=jade=.jade
 --sort-files
