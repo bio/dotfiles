@@ -17,9 +17,14 @@
 
 ### Configure Plugins
 
+#### dein.vim
+
+    curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
+    sh ./installer.sh ~/.vim/dein
+
 #### Command-T
 
-    cd ~/dotfiles/vim/bundles/repos/github.com/wincent/command-t/ruby/command-t/ext/command-t
+    cd ~/.vim/dein/repos/github.com/wincent/command-t/ruby/command-t/ext/command-t
     ruby extconf.rb
     make
 

@@ -4,13 +4,13 @@ if &compatible
   set nocompatible
 endif
 
-set runtimepath+=~/dotfiles/vim/bundles/repos/github.com/Shougo/dein.vim
+set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
 
-if dein#load_state('~/dotfiles/vim/bundles')
-  call dein#begin('~/dotfiles/vim/bundles')
+if dein#load_state('~/.vim/dein')
+  call dein#begin('~/.vim/dein')
 
   " Let dein manage dein
-  call dein#add('~/dotfiles/vim/bundles/repos/github.com/Shougo/dein.vim')
+  call dein#add('~/.vim/dein/repos/github.com/Shougo/dein.vim')
 
   call dein#add('wincent/command-t', {
   \   'build':
@@ -68,7 +68,7 @@ set laststatus=2
 set wildmenu
 set wildmode=longest,full
 " Patterns to ignore during file-navigation
-set wildignore+=*.o,*/.git/*,*/.hg/*,*/.svn/*
+set wildignore+=*.o,*/.git/*,*/.hg/*
 
 " Moise in all modes
 set mouse=a
