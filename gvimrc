@@ -21,10 +21,10 @@ macmenu &File.Close key=<nop>
 macmenu &File.Close\ Window key=<nop>
 
 " Next/prev buffer
-macmenu Window.Select\ Next\ Tab key=<Nop>
+macmenu Window.Show\ Next\ Tab key=<Nop>
 map <silent> <D-}> :bnext<CR>
 imap <silent> <D-}> <Esc>:bnext<CR>
-macmenu Window.Select\ Previous\ Tab key=<Nop>
+macmenu Window.Show\ Previous\ Tab key=<Nop>
 map <silent> <D-{> :bprev<CR>
 imap <silent> <D-{> <Esc>:bprev<CR>
 
