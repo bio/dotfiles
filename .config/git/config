@@ -22,7 +22,7 @@
     autocrlf = input
     safecrlf = true
     pager = less -R
-    editor = /usr/bin/vim
+    editor = vim
 [credential]
     helper = osxkeychain
 [push]
