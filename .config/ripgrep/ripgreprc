@@ -1,0 +1,11 @@
+# When searching for a pattern, ignore case differences.
+--ignore-case
+
+# Show the lines surrounding a match.
+--context=1
+
+# Force ripgrep to sort its output by file name. (This disables parallelism, so it might be slower.)
+--sort=path
+
+# Follow symbolic links while recursively searching.
+--follow
