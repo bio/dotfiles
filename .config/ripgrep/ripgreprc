@@ -9,3 +9,13 @@
 
 # Follow symbolic links while recursively searching.
 --follow
+
+# color settings
+--colors=path:style:bold
+--colors=line:fg:yellow
+--colors=line:style:bold
+--colors=path:fg:green
+--colors=path:style:bold
+--colors=match:none
+--colors=match:fg:black
+--colors=match:bg:yellow
