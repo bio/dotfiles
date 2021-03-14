@@ -3,10 +3,12 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'antoinemadec/FixCursorHold.nvim' " see https://github.com/neovim/neovim/issues/12587
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'itchyny/vim-gitbranch'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'rhysd/git-messenger.vim'
+Plug 'tpope/vim-commentary'
 call plug#end()
 
 " show line numbers
@@ -32,6 +34,7 @@ set colorcolumn=80
 highlight ColorColumn ctermbg=255 guibg=#f9f9f9
 
 highlight LineNr ctermfg=251 ctermbg=none guifg=#c6c6c6
+highlight VertSplit cterm=none ctermfg=0 ctermbg=15 gui=none guifg=#000000 guibg=#ffffff
 highlight Comment ctermfg=21 ctermbg=none guifg=#0000ff
 
 " highlight the current line number only
@@ -46,17 +49,39 @@ set mouse=a
 let loaded_netrw=0
 
 " set space as leader key
-"
 let mapleader=" "
 
 " statusline
-set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %y
+function! StatusLineGitBranch()
+  let l:branchname = gitbranch#name()
+  return strlen(l:branchname) > 0 ? ' (' . l:branchname . ')' : ''
+endfunction
+set statusline=%f%{StatusLineGitBranch()}\ %h%m%r%=%-14.(%l,%c%V%)\ %y
+highlight StatusLine cterm=none ctermfg=15 ctermbg=0 gui=none guifg=#ffffff guibg=#000000
+highlight StatusLineNC cterm=none ctermfg=15 ctermbg=243 gui=none guifg=#ffffff guibg=#767676
 
 " junegunn/fzf.vim
-let $FZF_DEFAULT_OPTS = '--preview-window sharp'
+let $FZF_DEFAULT_OPTS = '--preview-window sharp:noborder'
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
+
+function! RipgrepFzf(query, fullscreen)
+  " rg uses .config/ripgrep/ripgreprc config
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --context=0 -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--preview-window', 'bottom:6:noborder', '--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
 nnoremap <silent> <Leader><Space> :Files<CR>
 nnoremap <silent> <Leader>ff :Files<CR>
 nnoremap <silent> <Leader>bb :Buffers<CR>
+
+lua <<EOF
+vim.api.nvim_set_keymap('n', '<Leader>s/', ':RG! ', { noremap = true, silent = false })
+EOF
 
 " lsp, nvim-lua/completion-nvim
 lua <<EOF
@@ -83,7 +108,7 @@ local on_attach = function(client, bufnr)
   end
 end
 
-local servers = { "intelephense" }
+local servers = { 'intelephense', 'tsserver' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach }
 end
@@ -95,7 +120,10 @@ EOF
 let g:cursorhold_updatetime = 100
 
 " show lsp diagnostic list for current buffer
-autocmd BufWritePost * lua if vim.lsp.diagnostic.get_count(0) > 0 then vim.lsp.diagnostic.set_loclist() end
+augroup lsp_diagnostic_list
+  autocmd!
+  autocmd BufWritePost * lua if vim.lsp.diagnostic.get_count(0) > 0 then vim.lsp.diagnostic.set_loclist() end
+augroup END
 
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -114,8 +142,7 @@ imap <s-tab> <Plug>(completion_smart_s_tab)
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {
-    "css", "javascript", "jsdoc", "json", "html", "lua", "nix", "regex",
-    "rust", "toml", "vue",
+    "css", "json", "html", "nix", "toml",
   },
   highlight = {
     enable = false, -- true,
@@ -136,17 +163,32 @@ nnoremap <silent> gd <cmd>lua vim.lsp.buf.declaration()<CR>
 " edit vimrc
 nnoremap <leader>v :e $MYVIMRC<CR>
 
-" windows manipulation commands (w)
+" moving cursor to other windows
 nnoremap <silent> <leader>wk :wincmd k<CR> " up
 nnoremap <silent> <leader>wj :wincmd j<CR> " down
 nnoremap <silent> <leader>wh :wincmd h<CR> " left
 nnoremap <silent> <leader>wl :wincmd l<CR> " right
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
+" splits
 nnoremap <silent> <leader>wv :vsplit<CR> " vertical split
 nnoremap <silent> <leader>ws :split<CR> " horizontal split
 nnoremap <silent> <leader>wd :close<CR> " delete the current window
+nnoremap <silent> sv :vsplit<CR> " vertical split
+
+" tpope/vim-commentary
+augroup comments
+  autocmd!
+  autocmd FileType php setlocal commentstring=//\ %s
+augroup END
 
 " delete trailing whitespaces on save
-autocmd BufWritePre * let winview=winsaveview()
-  \ | keepjumps keeppatterns %s/\s\+$//e
-  \ | call winrestview(winview) |unlet! winview
+augroup trailing_whitespaces
+  autocmd!
+  autocmd BufWritePre * let winview=winsaveview()
+    \ | keepjumps keeppatterns %s/\s\+$//e
+    \ | call winrestview(winview) |unlet! winview
+augroup END
