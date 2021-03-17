@@ -9,6 +9,10 @@ Plug 'nvim-lua/completion-nvim'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'rhysd/git-messenger.vim'
 Plug 'tpope/vim-commentary'
+
+" vim-prosession depends on vim-obsession
+Plug 'tpope/vim-obsession'
+Plug 'dhruvasagar/vim-prosession'
 call plug#end()
 
 " show line numbers
@@ -83,15 +87,15 @@ lua <<EOF
 vim.api.nvim_set_keymap('n', '<Leader>s/', ':RG! ', { noremap = true, silent = false })
 EOF
 
+autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+autocmd FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+
 " lsp, nvim-lua/completion-nvim
 lua <<EOF
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-  -- require('completion')
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  require('completion')
 
   -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
@@ -183,6 +187,15 @@ nnoremap <silent> sv :vsplit<CR> " vertical split
 augroup comments
   autocmd!
   autocmd FileType php setlocal commentstring=//\ %s
+augroup END
+
+" dhruvasagar/vim-prosession
+let g:prosession_dir = '~/.local/share/nvim/sessions/'
+
+" source config changes automatically
+augroup source_config
+  autocmd!
+  autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
 augroup END
 
 " delete trailing whitespaces on save
