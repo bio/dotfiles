@@ -15,7 +15,7 @@ set fish_color_command black
 set fish_color_cwd blue
 set fish_color_search_match --background='#eeeeee'
 set fish_pager_color_completion normal
-set fish_pager_color_prefix black --underline
+set fish_pager_color_prefix blue
 
 # import local config
 set local_config ~/.config/fish/config.local.fish

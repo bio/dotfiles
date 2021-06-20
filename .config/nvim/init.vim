@@ -1,6 +1,7 @@
 " specify a directory for vim-plug plugins
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'antoinemadec/FixCursorHold.nvim' " see https://github.com/neovim/neovim/issues/12587
+Plug 'ggandor/lightspeed.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'itchyny/vim-gitbranch'
@@ -60,9 +61,23 @@ function! StatusLineGitBranch()
   let l:branchname = gitbranch#name()
   return strlen(l:branchname) > 0 ? ' (' . l:branchname . ')' : ''
 endfunction
-set statusline=%f%{StatusLineGitBranch()}\ %h%m%r%=%-14.(%l,%c%V%)\ %y
+
+set statusline=%f%{StatusLineGitBranch()}\ %h%m%r%=%-14.(%l,%c%V%)\ %P\ %y
 highlight StatusLine cterm=none ctermfg=15 ctermbg=0 gui=none guifg=#ffffff guibg=#000000
 highlight StatusLineNC cterm=none ctermfg=15 ctermbg=243 gui=none guifg=#ffffff guibg=#767676
+
+" ggandor/lightspeed.nvim
+lua <<EOF
+require'lightspeed'.setup {
+  jump_to_first_match = true,
+  jump_on_partial_input_safety_timeout = 400,
+  highlight_unique_chars = false,
+  grey_out_search_area = true,
+  match_only_the_start_of_same_char_seqs = true,
+  limit_ft_matches = 5,
+  full_inclusive_prefix_key = '<c-x>',
+}
+EOF
 
 " junegunn/fzf.vim
 let $FZF_DEFAULT_OPTS = '--preview-window sharp:noborder'
@@ -94,7 +109,6 @@ autocmd FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 lua <<EOF
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
-
   require('completion')
 
   -- Set autocommands conditional on server_capabilities
