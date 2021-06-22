@@ -1,1 +1,3 @@
+# local configs
 .config/fish/config.local.fish
+.config/nvim/init.local.vim

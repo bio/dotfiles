@@ -3,6 +3,7 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'antoinemadec/FixCursorHold.nvim' " see https://github.com/neovim/neovim/issues/12587
 Plug 'ggandor/lightspeed.nvim'
 Plug 'hrsh7th/nvim-compe'
+Plug 'janko/vim-test'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'itchyny/vim-gitbranch'
@@ -93,9 +94,9 @@ require'compe'.setup {
 }
 EOF
 
-" Set completeopt to have a better completion experience
+" set completeopt to have a better completion experience
 set completeopt=menuone,noselect
-" Avoid showing message extra message when using completion
+" avoid showing 'Pattern not found' message when using completion
 set shortmess+=c
 
 inoremap <silent><expr> <C-Space> compe#complete()
@@ -110,6 +111,11 @@ inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<S-Tab>'
 inoremap <expr> <C-j> pumvisible() ? '<C-n>' : '<C-j>'
 inoremap <expr> <C-k> pumvisible() ? '<C-p>' : '<C-k>'
 
+highlight Pmenu ctermfg=0 ctermbg=255 guibg=#e9e9e9
+highlight PmenuSel ctermfg=0 ctermbg=7 guibg=#d6d6d6
+highlight PmenuSbar ctermbg=248 guibg=#cccccc
+highlight PmenuThumb ctermbg=0 guibg=#666666
+
 " ggandor/lightspeed.nvim
 lua <<EOF
 require'lightspeed'.setup {
@@ -122,6 +128,13 @@ require'lightspeed'.setup {
   full_inclusive_prefix_key = '<c-x>',
 }
 EOF
+
+" janko/vim-test
+nnoremap <silent> tt :TestNearest<CR>
+nnoremap <silent> tf :TestFile<CR>
+nnoremap <silent> ts :TestSuite<CR>
+let test#strategy = "neovim"
+let test#neovim#term_position = "vertical"
 
 " junegunn/fzf.vim
 let $FZF_DEFAULT_OPTS = '--preview-window sharp:noborder'
@@ -197,7 +210,7 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 
-nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition)<CR>
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
@@ -248,3 +261,8 @@ augroup trailing_whitespaces
     \ | keepjumps keeppatterns %s/\s\+$//e
     \ | call winrestview(winview) |unlet! winview
 augroup END
+
+let g:local_vimrc = fnamemodify($MYVIMRC, ':p:h') . '/init.local.vim'
+if filereadable(g:local_vimrc)
+  execute 'source ' . g:local_vimrc
+endif
