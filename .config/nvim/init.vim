@@ -58,12 +58,17 @@ let loaded_netrw=0
 let mapleader=" "
 
 " statusline
+function! StatusLineLspDiagnosticSummary()
+  let l:summary = get(b:, 'lsp_diagnostic_summary', '')
+  return strlen(l:summary) > 0 ? l:summary . '  ' : ''
+endfunction
+
 function! StatusLineGitBranch()
   let l:branchname = gitbranch#name()
   return strlen(l:branchname) > 0 ? ' (' . l:branchname . ')' : ''
 endfunction
 
-set statusline=%f%{StatusLineGitBranch()}\ %h%m%r%=%-14.(%l,%c%V%)\ %P\ %y
+set statusline=%{StatusLineLspDiagnosticSummary()}%f%{StatusLineGitBranch()}\ %h%m%r%=%-14.(%l,%c%V%)\ %P\ %y
 highlight StatusLine cterm=none ctermfg=15 ctermbg=0 gui=none guifg=#ffffff guibg=#000000
 highlight StatusLineNC cterm=none ctermfg=15 ctermbg=243 gui=none guifg=#ffffff guibg=#767676
 
@@ -164,6 +169,20 @@ autocmd FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
 " lsp
 lua <<EOF
+gen_lsp_diagnostic_summary = function()
+  local bufnr = vim.fn.bufnr('%')
+  local lsp_diagnostic = 'E:' .. vim.lsp.diagnostic.get_count(bufnr, 'Error')
+    .. '  W:' .. vim.lsp.diagnostic.get_count(bufnr, 'Warning')
+  vim.api.nvim_buf_set_var(bufnr, 'lsp_diagnostic_summary', lsp_diagnostic)
+end
+
+vim.api.nvim_exec([[
+  augroup lsp_diagnostic
+    autocmd! * <buffer>
+    autocmd User LspDiagnosticsChanged lua gen_lsp_diagnostic_summary()
+  augroup END
+]], false)
+
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
   -- Set autocommands conditional on server_capabilities
@@ -238,6 +257,8 @@ nnoremap <silent> <leader>wv :vsplit<CR> " vertical split
 nnoremap <silent> <leader>ws :split<CR> " horizontal split
 nnoremap <silent> <leader>wd :close<CR> " delete the current window
 nnoremap <silent> sv :vsplit<CR> " vertical split
+
+nnoremap <silent> <leader>bd :bd<CR> " delete the current buffer
 
 " tpope/vim-commentary
 augroup comments
