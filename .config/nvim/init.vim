@@ -1,5 +1,6 @@
 " specify a directory for vim-plug plugins
 call plug#begin(stdpath('data') . '/plugged')
+Plug 'airblade/vim-rooter'
 Plug 'antoinemadec/FixCursorHold.nvim' " see https://github.com/neovim/neovim/issues/12587
 Plug 'cespare/vim-toml'
 Plug 'ggandor/lightspeed.nvim'
@@ -53,7 +54,10 @@ highlight CursorLineNr ctermfg=243 ctermbg=none gui=none guifg=#767676
 set mouse=a
 
 " disable netrw
-let loaded_netrw=0
+let g:loaded_netrw = 0
+
+" don't show the intro message
+set shortmess+=I
 
 " set space as leader key
 let mapleader=" "
@@ -72,6 +76,9 @@ endfunction
 set statusline=%{StatusLineLspDiagnosticSummary()}%f%{StatusLineGitBranch()}\ %h%m%r%=%-14.(%l,%c%V%)\ %P\ %y
 highlight StatusLine cterm=none ctermfg=15 ctermbg=0 gui=none guifg=#ffffff guibg=#000000
 highlight StatusLineNC cterm=none ctermfg=15 ctermbg=243 gui=none guifg=#ffffff guibg=#767676
+
+" airblade/vim-rooter
+let g:rooter_patterns = ['.git']
 
 " hrsh7th/nvim-compe
 lua <<EOF
