@@ -1,6 +1,7 @@
 " specify a directory for vim-plug plugins
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'antoinemadec/FixCursorHold.nvim' " see https://github.com/neovim/neovim/issues/12587
+Plug 'cespare/vim-toml'
 Plug 'ggandor/lightspeed.nvim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'janko/vim-test'
