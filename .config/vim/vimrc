@@ -14,7 +14,7 @@ Plug 'itchyny/vim-gitbranch'
 Plug 'rhysd/git-messenger.vim'
 Plug 'tpope/vim-commentary'
 Plug 'https://gist.github.com/topfunky/424448',
-    \ { 'as': 'topfunky-light.vim', 'do': 'mkdir -p colors; mv *.vim colors/' }
+  \ { 'as': 'topfunky-light.vim', 'do': 'mkdir -p colors; mv *.vim colors/' }
 call plug#end()
 
 " Enable file type detection.

@@ -1,17 +1,17 @@
 ## Installation
 
-    mkdir -p ~/tmp/vim
     cd ~
     git clone https://github.com/bio/dotfiles.git
-    cd dotfiles
 
     ln -s ~/dotfiles/.config ~/.config
     ln -s ~/dotfiles/.config/vim/gvimrc ~/.gvimrc
     ln -s ~/dotfiles/.config/vim/vimrc ~/.vimrc
-    ln -s ~/dotfiles/zshrc ~/.zshrc
     ln -s ~/dotfiles/ackrc ~/.ackrc
     ln -s ~/dotfiles/psqlrc ~/.psqlrc
+    ln -s ~/dotfiles/zshrc ~/.zshrc
+
     touch ~/.psqlrc_local
+    mkdir -p ~/tmp/vim
 
 ### Install vim plugin manager
 
