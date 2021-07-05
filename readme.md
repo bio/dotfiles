@@ -4,32 +4,23 @@
     cd ~
     git clone https://github.com/bio/dotfiles.git
     cd dotfiles
-    git submodule update --recursive --init
 
     ln -s ~/dotfiles/.config ~/.config
+    ln -s ~/dotfiles/.config/vim/gvimrc ~/.gvimrc
+    ln -s ~/dotfiles/.config/vim/vimrc ~/.vimrc
     ln -s ~/dotfiles/zshrc ~/.zshrc
-    ln -s ~/dotfiles/vimrc ~/.vimrc
-    ln -s ~/dotfiles/gvimrc ~/.gvimrc
-    ln -s ~/dotfiles/vim ~/.vim
     ln -s ~/dotfiles/ackrc ~/.ackrc
     ln -s ~/dotfiles/psqlrc ~/.psqlrc
     touch ~/.psqlrc_local
 
-### Configure Plugins
+### Install vim plugin manager
 
-#### dein.vim
+#### Neovim
 
-    curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
-    sh ./installer.sh ~/.vim/dein
+    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-#### Command-T
+#### Vim
 
-    cd ~/.vim/dein/repos/github.com/wincent/command-t/ruby/command-t/ext/command-t
-    ruby extconf.rb
-    make
-
-## Updating
-
-    cd ~/dotfiles
-    git submodule foreach git pull
-
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim

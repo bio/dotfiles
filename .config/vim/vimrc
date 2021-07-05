@@ -4,36 +4,22 @@ if &compatible
   set nocompatible
 endif
 
-set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
-
-if dein#load_state('~/.vim/dein')
-  call dein#begin('~/.vim/dein')
-
-  " Let dein manage dein
-  call dein#add('~/.vim/dein/repos/github.com/Shougo/dein.vim')
-
-  call dein#add('wincent/command-t', {
-  \   'build':
-  \     'sh -c "cd ruby/command-t/ext/command-t && ruby extconf.rb && make"'
-  \ })
-
-  call dein#add('https://gist.github.com/topfunky/424448', {
-  \   'name': 'topfunky-light.vim',
-  \   'script_type': 'colors'
-  \ })
-
-  call dein#end()
-  call dein#save_state()
-endif
+call plug#begin('~/.vim/plugged')
+Plug 'airblade/vim-rooter'
+Plug 'cespare/vim-toml'
+Plug 'janko/vim-test'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'itchyny/vim-gitbranch'
+Plug 'rhysd/git-messenger.vim'
+Plug 'tpope/vim-commentary'
+Plug 'https://gist.github.com/topfunky/424448',
+    \ { 'as': 'topfunky-light.vim', 'do': 'mkdir -p colors; mv *.vim colors/' }
+call plug#end()
 
 " Enable file type detection.
-filetype plugin indent on
-syntax enable
-
-" install not installed plugins on startup.
-if dein#check_install()
-  call dein#install()
-endif
+""filetype plugin indent on
+""syntax enable
 
 set backupdir=$HOME/tmp/vim
 set directory=$HOME/tmp/vim
@@ -70,7 +56,7 @@ set wildmode=longest,full
 " Patterns to ignore during file-navigation
 set wildignore+=*.o,*/.git/*,*/.hg/*
 
-" Moise in all modes
+" Enable mouse in all modes
 set mouse=a
 
 " Switch syntax highlighting on, when the terminal has colors
@@ -89,9 +75,6 @@ if has("autocmd")
   autocmd FileType scss setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType markdown setlocal wrap linebreak nolist
-
-  " Automatically remove trailing whitespace
-  autocmd BufWritePre *.php,*.py,*.css,*.scss,*.js,*.md,*.txt,*.yml :call Preserve("%s/\\s\\+$//e")
 
   " Don't write backup file if vim is being called by "crontab -e"
   autocmd BufWrite /private/tmp/crontab.* set nowritebackup
@@ -144,42 +127,8 @@ nmap <silent> <leader>n :silent :nohlsearch<CR>
 cmap w!! %!sudo tee > /dev/null %
 
 
-" Preserves the state
-function! Preserve(command)
-  " Preparation: save last search, and cursor position.
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  " Do the business:
-  execute a:command
-  " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
-endfunction
-
-" Strip trailing whitespaces
-nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
-vmap _$ :call Preserve("s/\\s\\+$//e")<CR>
-
 " Shortcuts for visual selections
 nmap gV `[v`]
-
-" Easily modify vimrc
-nmap <leader>v :e $MYVIMRC<CR>
-" Apply vim configurations without restarting
-if has("autocmd")
-  augroup myvimrchooks
-    au!
-    autocmd BufWritePost .vimrc source ~/.vimrc
-  augroup END
-endif
-
-" Ack
-" Set a mark then search
-nmap <leader>a mA:Ack<space>
-" Set a mark then pull word under cursor
-nmap <leader>za mA:Ack "<C-r>=expand("<cword>")<cr>"
-nmap <leader>zA mA:Ack "<C-r>=expand("<cWORD>")<cr>"
 
 " Mappings for a recovering TextMate user indentation
 nmap <D-[> <<
@@ -193,7 +142,7 @@ vmap <D-]> >gv
 vmap <D-/> \\gv
 map <D-/> \\\
 
-" ctrl-a and ctrl-e move the cursor to the start and end of the line 
+" ctrl-a and ctrl-e move the cursor to the start and end of the line
 " without leaving insert mode
 " http://stackoverflow.com/questions/6926034
 imap <C-a> <C-o>I
@@ -208,31 +157,90 @@ function! InsCtrlE()
 endfunction
 
 " disable netrw
-let loaded_netrw = 0
+let g:loaded_netrw = 0
 
-" Command-T
-let g:CommandTMaxFiles=40000
-let g:CommandTFileScanner='git'
-nmap <silent> <leader>t :CommandT<CR>
-imap <silent> <leader>t <Esc>:CommandT<CR>
-nmap <silent> <leader>ff :CommandT<CR>
-imap <silent> <leader>ff <Esc>:CommandT<CR>
-nmap <silent> <leader><Space> :CommandT<CR>
-" flush path cache and rescan dir
-nmap <silent> <leader>fc :CommandTFlush<CR>
-imap <silent> <leader>fc <Esc>:CommandTFlush<CR>
+" airblade/vim-rooter
+let g:rooter_patterns = ['.git']
+
+" janko/vim-test
+nnoremap <silent> tt :TestNearest<CR>
+nnoremap <silent> tf :TestFile<CR>
+nnoremap <silent> ts :TestSuite<CR>
+let test#strategy = "vimterminal"
+let test#neovim#term_position = "vertical"
+
+" junegunn/fzf.vim
+let $FZF_DEFAULT_OPTS = '--preview-window sharp:noborder'
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
+
+function! RipgrepFzf(query, fullscreen)
+  " rg uses .config/ripgrep/ripgreprc config
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --context=0 -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--preview-window', 'bottom:6:noborder', '--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+nnoremap <silent> <Leader><Space> :Files<CR>
+nnoremap <silent> <Leader>ff :Files<CR>
+nnoremap <silent> <Leader>bb :Buffers<CR>
+
+" edit vimrc
+nnoremap <leader>v :e $MYVIMRC<CR>
+
+" moving cursor to other windows
+nnoremap <silent> <leader>wk :wincmd k<CR> " up
+nnoremap <silent> <leader>wj :wincmd j<CR> " down
+nnoremap <silent> <leader>wh :wincmd h<CR> " left
+nnoremap <silent> <leader>wl :wincmd l<CR> " right
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" splits
+nnoremap <silent> <leader>wv :vsplit<CR> " vertical split
+nnoremap <silent> <leader>ws :split<CR> " horizontal split
+nnoremap <silent> <leader>wd :close<CR> " delete the current window
+nnoremap <silent> sv :vsplit<CR> " vertical split
+
+nnoremap <silent> <leader>bd :bd<CR> " delete the current buffer
+
+" tpope/vim-commentary
+augroup comments
+  autocmd!
+  autocmd FileType php setlocal commentstring=//\ %s
+augroup END
+
+
+" source config changes automatically
+augroup source_config
+  autocmd!
+  autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
+augroup END
+
+" delete trailing whitespaces on save
+augroup trailing_whitespaces
+  autocmd!
+  autocmd BufWritePre * let winview=winsaveview()
+    \ | keepjumps keeppatterns %s/\s\+$//e
+    \ | call winrestview(winview) |unlet! winview
+augroup END
 
 menu Encoding.utf-8 :e ++enc=utf-8<CR>
 menu Encoding.windows-1251 :e ++enc=cp1251<CR>
 
-" allow cyrillic into Normal mode 
+" allow cyrillic into Normal mode
 set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,
-  \фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz,
+  \фисвуапршолдьтщзйкіыегмцчня;abcdefghijklmnopqrsstuvwxyz,
   \ХЪЖЭБЮ;{}:\\"<>,
-  \хъжэбю;[];'\\,.,
+  \хїъжєэбю;[]];''\\,.,
   \№;#
 
 " local settings
-if filereadable(glob("~/.vimrc_local"))
-  source ~/.vimrc_local
+if filereadable(glob("~/.config/vim/vimrc_local"))
+  source ~/.config/vim/vimrc_local
 endif
