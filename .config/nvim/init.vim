@@ -27,9 +27,6 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
-" use system clipboard
-set clipboard=unnamedplus
-
 " enable the true color support
 set termguicolors
 
@@ -132,13 +129,11 @@ highlight PmenuThumb ctermbg=0 guibg=#666666
 " ggandor/lightspeed.nvim
 lua <<EOF
 require'lightspeed'.setup {
-  jump_to_first_match = true,
   jump_on_partial_input_safety_timeout = 400,
   highlight_unique_chars = false,
   grey_out_search_area = true,
   match_only_the_start_of_same_char_seqs = true,
   limit_ft_matches = 5,
-  full_inclusive_prefix_key = '<c-x>',
 }
 EOF
 
@@ -169,7 +164,7 @@ nnoremap <silent> <Leader>ff :Files<CR>
 nnoremap <silent> <Leader>bb :Buffers<CR>
 
 lua <<EOF
-vim.api.nvim_set_keymap('n', '<Leader>s/', ':RG! ', { noremap = true, silent = false })
+vim.api.nvim_set_keymap('n', '<Leader>/', ':RG! ', { noremap = true, silent = false })
 EOF
 
 autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
@@ -267,6 +262,9 @@ nnoremap <silent> <leader>wd :close<CR> " delete the current window
 nnoremap <silent> sv :vsplit<CR> " vertical split
 
 nnoremap <silent> <leader>bd :bd<CR> " delete the current buffer
+
+" Y copies the selected text to system clipboard
+vnoremap Y "+y
 
 " tpope/vim-commentary
 augroup comments
