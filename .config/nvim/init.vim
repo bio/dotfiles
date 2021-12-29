@@ -174,8 +174,8 @@ autocmd FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 lua <<EOF
 gen_lsp_diagnostic_summary = function()
   local bufnr = vim.fn.bufnr('%')
-  local lsp_diagnostic = 'E:' .. vim.lsp.diagnostic.get_count(bufnr, 'Error')
-    .. '  W:' .. vim.lsp.diagnostic.get_count(bufnr, 'Warning')
+  local lsp_diagnostic = 'E:' .. vim.tbl_count(vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.ERROR }))
+    .. '  W:' .. vim.tbl_count(vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.WARN }))
   vim.api.nvim_buf_set_var(bufnr, 'lsp_diagnostic_summary', lsp_diagnostic)
 end
 
@@ -205,7 +205,12 @@ end
 
 local servers = { 'intelephense', 'tsserver' }
 for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup { on_attach = on_attach }
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    }
+  }
 end
 EOF
 
@@ -217,7 +222,7 @@ let g:cursorhold_updatetime = 100
 " show lsp diagnostic list for current buffer
 augroup lsp_diagnostic_list
   autocmd!
-  autocmd BufWritePost * lua if vim.lsp.diagnostic.get_count(0) > 0 then vim.lsp.diagnostic.set_loclist() end
+  autocmd BufWritePost * lua if vim.tbl_count(vim.diagnostic.get(0)) > 0 then vim.diagnostic.setloclist() end
 augroup END
 
 " nvim-treesitter/nvim-treesitter
