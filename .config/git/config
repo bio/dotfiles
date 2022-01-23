@@ -1,31 +1,41 @@
 [user]
-    name = Valery Viktorovsky
-    email = viktorovsky@gmail.com
-    signingkey = 1A8F43E696C74ECC
+name = Valery Viktorovsky
+email = viktorovsky@gmail.com
+signingkey = 1A8F43E696C74ECC
+
 [alias]
-     co = checkout
-     ci = commit
-     st = status
-     last = log -1 HEAD
-     ds = diff --stat
-     ca = diff --cached
-     cs = diff --cached --stat
-     hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+co = checkout
+ci = commit
+st = status
+last = log -1 HEAD
+ds = diff --stat
+ca = diff --cached
+cs = diff --cached --stat
+hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
 
 [pager]
-     diff =
+diff =
+
+[format]
+pretty = format:%C(auto)%H%d%nAuthor:    %an <%ae>%nTimestamp: %ad%nCommitter: %cn <%ce>%n%n%w(,2,2)%B
+
+[log]
+date = rfc-local
 
 [color]
-     ui = auto
+ui = auto
 
 [core]
-    autocrlf = input
-    safecrlf = true
-    pager = less -R
-    editor = vim
+autocrlf = input
+safecrlf = true
+pager = less -R
+editor = vim
+
 [credential]
-    helper = osxkeychain
+helper = osxkeychain
+
 [push]
-    default = simple
+default = simple
+
 [gpg]
-    program = gpg
+program = gpg
