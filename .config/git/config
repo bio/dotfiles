@@ -20,7 +20,7 @@ diff =
 pretty = format:%C(auto)%H%d%nAuthor:    %an <%ae>%nTimestamp: %ad%nCommitter: %cn <%ce>%n%n%w(,2,2)%B
 
 [log]
-date = rfc-local
+date = rfc2822-local
 
 [color]
 ui = auto
