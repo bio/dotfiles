@@ -209,6 +209,9 @@ nnoremap <silent> sv :vsplit<CR> " vertical split
 
 nnoremap <silent> <leader>bd :bd<CR> " delete the current buffer
 
+" Y copies the selected text to system clipboard
+vnoremap Y "+y
+
 " tpope/vim-commentary
 augroup comments
   autocmd!
