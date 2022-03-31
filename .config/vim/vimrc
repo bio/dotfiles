@@ -24,6 +24,8 @@ call plug#end()
 set backupdir=$HOME/tmp/vim
 set directory=$HOME/tmp/vim
 
+set encoding=utf-8
+
 " Disable visual error flash and the error beep
 set visualbell t_vb=
 set number
