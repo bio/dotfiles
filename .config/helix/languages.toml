@@ -1,0 +1,10 @@
+# https://github.com/helix-editor/helix/blob/master/languages.toml#L428
+[[language]]
+name = "php"
+scope = "source.php"
+injection-regex = "php"
+file-types = ["php"]
+shebangs = ["php"]
+roots = ["composer.json", "index.php"]
+language-server = { command = "intelephense", args = ["--stdio"] }
+indent = { tab-width = 4, unit = "    " }

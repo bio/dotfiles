@@ -109,6 +109,9 @@ set completeopt=menuone,noselect
 " avoid showing 'Pattern not found' message when using completion
 set shortmess+=c
 
+autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType scss setlocal ts=2 sts=2 sw=2 expandtab
+
 inoremap <silent><expr> <C-Space> compe#complete()
 inoremap <silent><expr> <CR> compe#confirm('<CR>')
 inoremap <silent><expr> <C-e> compe#close('<C-e>')
