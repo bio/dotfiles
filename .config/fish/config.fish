@@ -1,5 +1,3 @@
-zoxide init fish | source
-
 # define environment variables to support fzf.vim
 set --export FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --exclude .git'
 set --export FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
@@ -8,7 +6,7 @@ set --export FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 set --export RIPGREP_CONFIG_PATH "$HOME/.config/ripgrep/ripgreprc"
 
 # disable fish greeting
-set fish_greeting 
+set fish_greeting
 
 # set colors
 set fish_color_command black

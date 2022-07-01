@@ -12,3 +12,7 @@ end)
 hk.bind('cmd', '3', function()
   hs.application.launchOrFocus('Obsidian')
 end)
+
+hk.bind('cmd', '4', function()
+  hs.application.launchOrFocus('Finder')
+end)
