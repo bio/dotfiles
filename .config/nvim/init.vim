@@ -50,8 +50,38 @@ highlight CursorLineNr ctermfg=243 ctermbg=none gui=none guifg=#767676
 " enable mouse
 set mouse=a
 
-" disable netrw
-let g:loaded_netrw = 0
+" disable some builtin vim plugins
+lua <<EOF
+local disable_builtin_vim_plugins = {
+  '2html_plugin',
+  'getscript',
+  'getscriptPlugin',
+  'gzip',
+  'loaded_remote_plugins',
+  'loaded_tutor_mode_plugin',
+  'logipat',
+  'matchit',
+  -- 'matchparen',
+  'netrw',
+  'netrwFileHandlers',
+  'netrwPlugin',
+  'netrwSettings',
+  'rrhelper',
+  'spellfile_plugin',
+  'tar',
+  'tarPlugin',
+  'vimball',
+  'vimballPlugin',
+  'zip',
+  'zipPlugin',
+}
+
+for i = 1, #disable_builtin_vim_plugins do
+  vim.g['loaded_' .. disable_builtin_vim_plugins[i]] = 1
+end
+EOF
+
+"let g:loaded_netrw = 0
 
 " don't show the intro message
 set shortmess+=I
@@ -219,10 +249,16 @@ EOF
 let g:cursorhold_updatetime = 100
 
 " show lsp diagnostic list for current buffer
-augroup lsp_diagnostic_list
-  autocmd!
-  autocmd BufWritePost * lua if vim.tbl_count(vim.diagnostic.get(0)) > 0 then vim.diagnostic.setloclist() end
-augroup END
+lua << EOF
+vim.api.nvim_create_autocmd('BufWritePost', {
+  group = vim.api.nvim_create_augroup('lsp_diagnostic_list', { clear = true }),
+  callback = function()
+    if vim.tbl_count(vim.diagnostic.get(0)) > 0 then
+      vim.diagnostic.setqflist()
+    end
+  end,
+})
+EOF
 
 " nvim-treesitter/nvim-treesitter
 lua <<EOF
