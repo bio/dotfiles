@@ -218,17 +218,30 @@ vim.api.nvim_exec([[
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
   -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.documentHighlightProvider then
     vim.api.nvim_exec([[
       highlight LspReferenceText ctermbg=255 guibg=#f5f5f5
       highlight LspReferenceRead ctermbg=255 guibg=#f5f5f5
       highlight LspReferenceWrite ctermbg=255 guibg=#f5f5f5
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
     ]], false)
+
+    vim.api.nvim_create_augroup('lsp_document_highlight', { clear = true })
+    vim.api.nvim_clear_autocmds {
+      buffer = bufnr,
+      group = 'lsp_document_highlight'
+    }
+    vim.api.nvim_create_autocmd('CursorHold', {
+      callback = vim.lsp.buf.document_highlight,
+      buffer = bufnr,
+      group = 'lsp_document_highlight',
+      desc = 'Document highlight',
+    })
+    vim.api.nvim_create_autocmd('CursorMoved', {
+      callback = vim.lsp.buf.clear_references,
+      buffer = bufnr,
+      group = 'lsp_document_highlight',
+      desc = 'Clear all references',
+    })
   end
 end
 
