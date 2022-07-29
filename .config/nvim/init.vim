@@ -267,7 +267,10 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   group = vim.api.nvim_create_augroup('lsp_diagnostic_list', { clear = true }),
   callback = function()
     if vim.tbl_count(vim.diagnostic.get(0)) > 0 then
-      vim.diagnostic.setqflist()
+      vim.diagnostic.setqflist({ open = true })
+    else
+      vim.api.nvim_command('cclose') -- close the quickfix window
+      vim.fn.setqflist({}, 'r', { title = 'Diagnostics' }) -- clear items from the current quickfix list
     end
   end,
 })
