@@ -185,7 +185,7 @@ let g:cursorhold_updatetime = 100
 
 " ggandor/lightspeed.nvim
 lua <<EOF
-require'lightspeed'.setup {
+require('lightspeed').setup {
   limit_ft_matches = 5,
 }
 EOF
@@ -193,7 +193,7 @@ EOF
 
 " hrsh7th/nvim-compe
 lua <<EOF
-require'compe'.setup {
+require('compe').setup {
   enabled = true;
   autocomplete = true;
   debug = false;
@@ -268,22 +268,23 @@ vim.api.nvim_set_keymap(
 )
 EOF
 
-function! RipgrepFzf(query, fullscreen)
-  " rg uses .config/ripgrep/ripgreprc config
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --context=0 -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--preview-window', 'bottom:6:noborder', '--phony', '--query', a:query, '--bind', 'change:reload:' . reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-
+" define :Rg command
 lua <<EOF
+vim.api.nvim_create_user_command(
+  'Rg',
+  function(opts)
+    require('fzf-lua').live_grep({
+      cmd = 'rg --column --line-number --no-heading --color=always --context=0',
+      search = opts.args
+    })
+  end,
+  { nargs = 1 }
+)
+
 vim.api.nvim_set_keymap(
   'n',
   '<Leader>/',
-  ':RG! ',
+  ':Rg ',
   { noremap = true, silent = false }
 )
 EOF
@@ -357,7 +358,7 @@ EOF
 
 " nvim-treesitter/nvim-treesitter
 lua <<EOF
-require'nvim-treesitter.configs'.setup {
+require('nvim-treesitter.configs').setup {
   ensure_installed = {
     'css', 'json', 'html', 'nix', 'toml',
   },
