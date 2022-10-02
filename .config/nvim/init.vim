@@ -7,7 +7,6 @@ endif
 lua <<EOF
 require('packer').startup(function(use)
   use 'airblade/vim-rooter'
-  use 'antoinemadec/FixCursorHold.nvim' -- see https://github.com/neovim/neovim/issues/12587
   use 'cespare/vim-toml'
   use 'ggandor/lightspeed.nvim'
   use 'hrsh7th/nvim-compe'
@@ -30,6 +29,9 @@ require('packer').startup(function(use)
   use 'dhruvasagar/vim-prosession'
 end)
 EOF
+
+" set a low updatetime in millisecond for the CursorHold autocommand event
+set updatetime=100
 
 " show line numbers
 set number
@@ -175,12 +177,6 @@ augroup END
 
 " airblade/vim-rooter
 let g:rooter_patterns = ['.git']
-
-
-" https://github.com/antoinemadec/FixCursorHold.nvim
-" in millisecond, used for both CursorHold and CursorHoldI,
-" use updatetime instead if not defined
-let g:cursorhold_updatetime = 100
 
 
 " ggandor/lightspeed.nvim
