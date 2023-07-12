@@ -104,7 +104,9 @@ let mapleader=" "
 autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd FileType scss setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType typescript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+autocmd FileType vue setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
 " statusline
 function! StatusLineLspDiagnosticSummary()
@@ -138,6 +140,12 @@ EOF
 
 " edit vimrc
 nnoremap <leader>v :e $MYVIMRC<CR>
+
+" move to the beginning/end of the line
+lua <<EOF
+vim.keymap.set({'n', 'x', 'o'}, 'H', '^')
+vim.keymap.set({'n', 'x', 'o'}, 'L', '$')
+EOF
 
 " moving cursor to other windows
 nnoremap <silent> <leader>wk :wincmd k<CR> " up
@@ -242,8 +250,12 @@ lua <<EOF
 require('fzf-lua').setup {
   winopts = {
     border = 'single',
-    width = 0.95,
-    height = 0.85,
+    width = 0.99,
+    height = 0.90,
+    preview = {
+      hidden = 'nohidden',
+      horizontal = 'right:48%',
+    },
   },
 }
 EOF
@@ -356,7 +368,9 @@ EOF
 lua <<EOF
 require('nvim-treesitter.configs').setup {
   ensure_installed = {
-    'css', 'json', 'html', 'nix', 'toml',
+    'commonlisp', 'c', 'css', 'fish', 'javascript', 'json', 'html', 'lua',
+    'markdown', 'nix', 'php', 'phpdoc', 'query', 'rust', 'toml', 'typescript',
+    'vim', 'vue', 'yaml', 'zig',
   },
   highlight = {
     enable = false, -- true,

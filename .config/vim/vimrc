@@ -72,11 +72,12 @@ endif
 set backspace=indent,eol,start
 
 if has("autocmd")
-  autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
-  autocmd FileType scss setlocal ts=2 sts=2 sw=2 expandtab
-  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType markdown setlocal wrap linebreak nolist
+  autocmd FileType scss setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType typescript setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
   " Don't write backup file if vim is being called by "crontab -e"
   autocmd BufWrite /private/tmp/crontab.* set nowritebackup
