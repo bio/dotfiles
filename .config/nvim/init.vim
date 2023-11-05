@@ -1,33 +1,51 @@
-" install packer
-let install_path = stdpath('data') . '/site/pack/packer/start/packer.nvim'
-if !isdirectory(install_path)
-  execute('!git clone --depth 1 https://github.com/wbthomason/packer.nvim ' . install_path)
-endif
-
 lua <<EOF
-require('packer').startup(function(use)
-  use 'airblade/vim-rooter'
-  use 'cespare/vim-toml'
-  use 'ggandor/lightspeed.nvim'
-  use 'hrsh7th/nvim-compe'
-  use 'ibhagwan/fzf-lua'
-  use 'janko/vim-test'
-  use 'itchyny/vim-gitbranch'
-  use 'neovim/nvim-lspconfig'
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = function()
-      require('nvim-treesitter.install').update({ with_sync = true })
-    end,
-  }
-  use 'rhysd/git-messenger.vim'
-  use 'tpope/vim-commentary'
-  use 'wbthomason/packer.nvim'
+-- install lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-  -- vim-prosession depends on vim-obsession
-  use 'tpope/vim-obsession'
-  use 'dhruvasagar/vim-prosession'
-end)
+require('lazy').setup(
+  {
+    'airblade/vim-rooter',
+    'cespare/vim-toml',
+    {
+      'dhruvasagar/vim-prosession',
+      dependencies = {
+        'tpope/vim-obsession',
+      },
+    },
+    'ggandor/lightspeed.nvim',
+
+    -- completion
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-cmdline',
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-path',
+    'hrsh7th/nvim-cmp',
+
+    'ibhagwan/fzf-lua',
+    'janko/vim-test',
+    'itchyny/vim-gitbranch',
+    'neovim/nvim-lspconfig',
+    {
+      'nvim-treesitter/nvim-treesitter',
+      build = function()
+        require('nvim-treesitter.install').update({ with_sync = true })()
+      end,
+    },
+    'rhysd/git-messenger.vim',
+    'tpope/vim-commentary',
+  }
+)
 EOF
 
 " set a low updatetime in millisecond for the CursorHold autocommand event
@@ -195,49 +213,91 @@ require('lightspeed').setup {
 EOF
 
 
-" hrsh7th/nvim-compe
+" hrsh7th/nvim-cmp
 lua <<EOF
-require('compe').setup {
-  enabled = true;
-  autocomplete = true;
-  debug = false;
-  min_length = 1;
-  preselect = 'enable';
-  throttle_time = 80;
-  source_timeout = 200;
-  resolve_timeout = 800;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
-  documentation = true;
+-- https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#no-snippet-plugin
+local has_words_before = function()
+  unpack = unpack or table.unpack
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
+end
 
-  source = {
-    path = true;
-    buffer = true;
-    calc = true;
-    nvim_lsp = true;
-    nvim_lua = true;
-  };
-}
+local cmp = require('cmp')
+
+cmp.setup({
+  mapping = {
+    ['<C-Space>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    },
+
+    ['<Tab>'] = function(fallback)
+      if not cmp.select_next_item() then
+        if vim.bo.buftype ~= 'prompt' and has_words_before() then
+          cmp.complete()
+        else
+          fallback()
+        end
+      end
+    end,
+
+    ['<S-Tab>'] = function(fallback)
+      if not cmp.select_prev_item() then
+        if vim.bo.buftype ~= 'prompt' and has_words_before() then
+          cmp.complete()
+        else
+          fallback()
+        end
+      end
+    end,
+  },
+  window = {
+    -- completion = cmp.config.window.bordered(),
+    -- documentation = cmp.config.window.bordered(),
+  },
+  sources = cmp.config.sources(
+    {
+      { name = 'path' },
+      { name = 'nvim_lsp' },
+    },
+    {
+      { name = 'buffer' },
+    }
+  )
+})
+
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(
+  { '/', '?' },
+  {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+      { name = 'buffer' },
+    }
+  }
+)
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(
+  ':',
+  {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources(
+      {
+        { name = 'path' },
+      },
+      {
+        { name = 'cmdline' },
+      }
+    )
+  }
+)
 EOF
 
 " set completeopt to have a better completion experience
 set completeopt=menuone,noselect
 " avoid showing 'Pattern not found' message when using completion
 set shortmess+=c
-
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR> compe#confirm('<CR>')
-inoremap <silent><expr> <C-e> compe#close('<C-e>')
-
-" use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab> pumvisible() ? '<C-n>' : '<Tab>'
-inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<S-Tab>'
-
-" use C-j and C-k to navigate through popup menu
-inoremap <expr> <C-j> pumvisible() ? '<C-n>' : '<C-j>'
-inoremap <expr> <C-k> pumvisible() ? '<C-p>' : '<C-k>'
 
 highlight Pmenu ctermfg=0 ctermbg=255 guibg=#e9e9e9
 highlight PmenuSel ctermfg=0 ctermbg=7 guibg=#d6d6d6
@@ -254,7 +314,7 @@ require('fzf-lua').setup {
     height = 0.90,
     preview = {
       hidden = 'nohidden',
-      horizontal = 'right:48%',
+      horizontal = 'right:42%',
     },
   },
 }
@@ -322,7 +382,10 @@ vim.api.nvim_exec([[
   augroup END
 ]], false)
 
-local nvim_lsp = require('lspconfig')
+-- nvim-cmp
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+local lspconfig = require('lspconfig')
 local on_attach = function(client, bufnr)
   -- Set autocommands conditional on server_capabilities
   if client.server_capabilities.documentHighlightProvider then
@@ -352,9 +415,25 @@ local on_attach = function(client, bufnr)
   end
 end
 
-local servers = { 'intelephense', 'tsserver' }
+lspconfig.intelephense.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  },
+  settings = {
+    intelephense = {
+      files = {
+        maxSize = 1000000,
+      },
+    },
+  },
+}
+
+local servers = { 'ocamllsp', 'tsserver' }
 for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
+  lspconfig[lsp].setup {
+    capabilities = capabilities,
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
@@ -368,9 +447,27 @@ EOF
 lua <<EOF
 require('nvim-treesitter.configs').setup {
   ensure_installed = {
-    'commonlisp', 'c', 'css', 'fish', 'javascript', 'json', 'html', 'lua',
-    'markdown', 'nix', 'php', 'phpdoc', 'query', 'rust', 'toml', 'typescript',
-    'vim', 'vue', 'yaml', 'zig',
+    'c',
+    'commonlisp',
+    'css',
+    'fish',
+    'javascript',
+    'json',
+    'html',
+    'lua',
+    'markdown',
+    'nix',
+    'ocaml',
+    'php',
+    'phpdoc',
+    'query',
+    'rust',
+    'toml',
+    'typescript',
+    'vim',
+    'vue',
+    'yaml',
+    'zig',
   },
   highlight = {
     enable = false, -- true,
