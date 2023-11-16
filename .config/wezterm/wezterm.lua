@@ -1,6 +1,6 @@
-local wezterm = require 'wezterm';
+local wezterm = require 'wezterm'
 
-local TITLEBAR_BG_COLOR <const> = "#f0f0f0";
+local TITLEBAR_BG_COLOR <const> = "#f0f0f0"
 
 return {
   -- text

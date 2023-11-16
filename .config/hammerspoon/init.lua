@@ -6,7 +6,7 @@ hk.bind('cmd', '1', function()
 end)
 
 hk.bind('cmd', '2', function()
-  hs.application.launchOrFocus('Firefox')
+  hs.application.launchOrFocus('Brave Browser')
 end)
 
 hk.bind('cmd', '3', function()
