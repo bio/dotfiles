@@ -2,7 +2,7 @@ local hk = require 'hs.hotkey'
 
 -- key bindings
 hk.bind('cmd', '1', function()
-  hs.application.launchOrFocus('iTerm')
+  hs.application.launchOrFocus('WezTerm')
 end)
 
 hk.bind('cmd', '2', function()
