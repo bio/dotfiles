@@ -77,6 +77,7 @@ if has("autocmd")
   autocmd FileType markdown setlocal wrap linebreak nolist
   autocmd FileType scss setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType typescript setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType vue setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
   " Don't write backup file if vim is being called by "crontab -e"
