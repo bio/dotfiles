@@ -1,6 +1,8 @@
 fork = true
 frame = "buttonless"
-vsync = true
+maximized = true
+tabs = false
+title-hidden = true
 
 [font]
 normal = ["Monaco"]
