@@ -30,6 +30,9 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
+-- wraps at word boundaries
+vim.opt.linebreak = true
+
 -- enable the true color support
 vim.opt.termguicolors = true
 
@@ -111,6 +114,21 @@ vim.api.nvim_create_autocmd('BufWritePre', {
    -- restore the cursor position
    vim.fn.winrestview(view)
  end,
+})
+
+-- autogroup to use native treesitter
+local treesitter_group = vim.api.nvim_create_augroup(
+  'NativeTreesitter',
+  { clear = true }
+)
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'c', 'lua', 'markdown', 'query', 'vim', 'vimdoc' },
+  group = treesitter_group,
+  desc = 'Enable native Treesitter highlighting',
+  callback = function()
+    vim.treesitter.start()
+  end,
 })
 
 -- setup lazy.nvim
