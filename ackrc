@@ -1,8 +1,0 @@
---ignore-case
---type-set=sass=.sass,.scss
---type-set=jade=.jade
---sort-files
---color
---context=1
---follow
---group

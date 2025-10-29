@@ -6,7 +6,6 @@
     ln -s ~/dotfiles/.config ~/.config
     ln -s ~/dotfiles/.config/vim/gvimrc ~/.gvimrc
     ln -s ~/dotfiles/.config/vim/vimrc ~/.vimrc
-    ln -s ~/dotfiles/ackrc ~/.ackrc
     ln -s ~/dotfiles/psqlrc ~/.psqlrc
     ln -s ~/dotfiles/zshrc ~/.zshrc
 
