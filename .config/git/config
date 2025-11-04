@@ -34,6 +34,9 @@ editor = vim
 [credential]
 helper = osxkeychain
 
+[commit]
+gpgsign = true
+
 [push]
 default = simple
 
