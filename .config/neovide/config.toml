@@ -3,7 +3,3 @@ frame = "buttonless"
 maximized = true
 tabs = false
 title-hidden = true
-
-[font]
-normal = ["Monaco"]
-size = 14.0
