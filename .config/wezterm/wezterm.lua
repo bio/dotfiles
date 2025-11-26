@@ -104,4 +104,6 @@ return {
       },
     },
   },
+
+  scrollback_lines = 50000,
 }
