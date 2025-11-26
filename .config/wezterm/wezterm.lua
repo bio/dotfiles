@@ -4,20 +4,20 @@ local TITLEBAR_BG_COLOR <const> = "#f0f0f0"
 
 return {
   -- text
-  font = wezterm.font_with_fallback({
-    "Monaco",
-    "Fira Code",
-  }),
-  font_size = 16.0,
-  freetype_load_target = "Normal",
-  line_height = 1.02,
+  font = wezterm.font('Monaco'),
+  font_size = 16,
+  -- iTerm2 style with anti-aliasing disabled
+  freetype_load_target = "Mono",
+  freetype_load_flags = "NO_AUTOHINT",
+  line_height = 0.98,
   cell_width = 1.04,
 
   -- window
   use_fancy_tab_bar = true,
+  show_close_tab_button_in_tabs = false,
   show_new_tab_button_in_tab_bar = false,
-  window_decorations = "RESIZE",
-  initial_cols = 187,
+  window_decorations = "NONE",
+  initial_cols = 171,
   initial_rows = 50,
   window_frame = {
     -- The font used in the tab bar
@@ -30,13 +30,12 @@ return {
     inactive_titlebar_bg = TITLEBAR_BG_COLOR,
   },
   window_padding = {
-    left = "0.5cell",
-    right = "0.5cell",
-    top = "0.1cell",
-    bottom = "0.1cell",
+    left = "0.8cell",
+    right = "0.8cell",
+    top = "0.2cell",
+    bottom = "0.3cell",
   },
 
---  adjust_window_size_when_changing_font_size = false,
   colors = {
     foreground = "#000000",
     background = "#ffffff",
