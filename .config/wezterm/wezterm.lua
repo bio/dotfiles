@@ -12,6 +12,9 @@ return {
   line_height = 0.98,
   cell_width = 1.04,
 
+  max_fps = 120,
+  mouse_wheel_scrolls_tabs = false,
+
   -- window
   use_fancy_tab_bar = true,
   show_close_tab_button_in_tabs = false,
