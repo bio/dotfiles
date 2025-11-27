@@ -39,6 +39,15 @@ return {
     bottom = "0.3cell",
   },
 
+  keys = {
+    -- Override Cmd+F to open search without using selection
+    {
+      key = 'f',
+      mods = 'SUPER',
+      action = wezterm.action.Search { CaseSensitiveString = '' },
+    },
+  },
+
   colors = {
     foreground = "#000000",
     background = "#ffffff",
