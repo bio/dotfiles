@@ -163,9 +163,16 @@ local plugins = {
 
       cmp.setup({
         window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
+          completion = cmp.config.window.bordered({
+            border = 'none',
+            winhighlight = 'Normal:Pmenu,CursorLine:PmenuSel,Search:None',
+          }),
+          documentation = cmp.config.window.bordered({
+            border = 'none',
+            winhighlight = 'Normal:NormalFloat,Search:None',
+          }),
         },
+
         mapping = cmp.mapping.preset.insert({
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -238,7 +245,7 @@ local plugins = {
     'ibhagwan/fzf-lua',
     keys = {
       {
-        '<leader>bb',
+        '<leader>fb',
         "<cmd>lua require('fzf-lua').buffers()<CR>",
         mode = 'n',
         remap = false,
@@ -272,89 +279,39 @@ local plugins = {
       'hrsh7th/cmp-nvim-lsp',
     },
     event = { 'BufNewFile', 'BufReadPre' },
-    keys = {
-      {
-        '<c-]>',
-        vim.lsp.buf.definition,
-        mode = 'n',
-        remap = false,
-        silent = true,
-        desc = 'Go to definition',
-      },
-      {
-        'K',
-        vim.lsp.buf.hover,
-        mode = 'n',
-        remap = false,
-        silent = true,
-        desc = 'Show hover information',
-      },
-      {
-        'gD',
-        vim.lsp.buf.implementation,
-        mode = 'n',
-        remap = false,
-        silent = true,
-        desc = 'Go to implementation',
-      },
-      {
-        '<c-k>',
-        vim.lsp.buf.signature_help,
-        mode = 'n',
-        remap = false,
-        silent = true,
-        desc = 'Show signature help',
-      },
-      {
-        '1gD',
-        vim.lsp.buf.type_definition,
-        mode = 'n',
-        remap = false,
-        silent = true,
-        desc = 'Go to type definition',
-      },
-      {
-        'gr',
-        vim.lsp.buf.references,
-        mode = 'n',
-        remap = false,
-        silent = true,
-        desc = 'Show references',
-      },
-      {
-        'g0',
-        vim.lsp.buf.document_symbol,
-        mode = 'n',
-        remap = false,
-        silent = true,
-        desc = 'Show document symbols',
-      },
-      {
-        'gW',
-        vim.lsp.buf.workspace_symbol,
-        mode = 'n',
-        remap = false,
-        silent = true,
-        desc = 'Show workspace symbols',
-      },
-      {
-        'gd',
-        vim.lsp.buf.declaration,
-        mode = 'n',
-        remap = false,
-        silent = true,
-        desc = 'Go to declaration',
-      },
-    },
     config = function()
       local lspconfig = require('lspconfig')
+      local util = require('lspconfig.util')
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+      local on_attach = function(_, bufnr)
+        local map = function(lhs, rhs, desc)
+          vim.keymap.set(
+            'n',
+            lhs,
+            rhs,
+            { buffer = bufnr, silent = true, desc = desc }
+          )
+        end
+
+        map('gd', vim.lsp.buf.definition, 'Go to definition')
+        map('gD', vim.lsp.buf.declaration, 'Go to declaration')
+        map('gi', vim.lsp.buf.implementation, 'Go to implementation')
+        map('gr', vim.lsp.buf.references, 'Show references')
+
+        map('K', vim.lsp.buf.hover, 'Show hover information')
+        map('<C-k>', vim.lsp.buf.signature_help, 'Show signature help')
+
+        map('1gD', vim.lsp.buf.type_definition, 'Go to type definition')
+        map('g0', vim.lsp.buf.document_symbol, 'Show document symbols')
+        map('gW', vim.lsp.buf.workspace_symbol, 'Show workspace symbols')
+      end
 
       lspconfig.intelephense.setup({
         capabilities = capabilities,
-        cmd = { "intelephense", "--stdio" },
-        filetypes = { "php" },
-        root_dir = lspconfig.util.root_pattern("composer.json", ".git"),
+        cmd = { 'intelephense', '--stdio' },
+        filetypes = { 'php' },
+        root_dir = util.root_pattern('composer.json', '.git'),
         settings = {
           intelephense = {
             files = {
@@ -362,15 +319,12 @@ local plugins = {
             },
           },
         },
-        on_attach = function(client, bufnr)
-          if client.server_capabilities.declarationProvider then
-            vim.keymap.set('n', 'gd', vim.lsp.buf.declaration, { silent = true, buffer = bufnr })
-          end
-        end,
+        on_attach = on_attach,
       })
 
       lspconfig.ts_ls.setup({
         capabilities = capabilities,
+        on_attach = on_attach,
       })
     end,
   },
