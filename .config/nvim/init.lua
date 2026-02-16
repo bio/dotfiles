@@ -380,3 +380,30 @@ require('lazy').setup({
   -- automatically check for plugin updates
   checker = { enabled = true },
 })
+
+-- neovide
+if vim.g.neovide then
+  vim.g.neovide_padding_top = 8
+  vim.g.neovide_padding_bottom = 8
+  vim.g.neovide_padding_left = 16
+  vim.g.neovide_padding_right = 16
+
+  vim.g.neovide_cursor_animate_command_line = false
+  vim.g.neovide_cursor_animate_in_insert_mode = false
+  vim.g.neovide_position_animation_length = 0
+  vim.g.neovide_scroll_animation_length = 0
+  vim.g.neovide_cursor_animation_length = 0
+  vim.o.guifont = 'Monaco:h16:#e-alias'
+
+  -- hide line numbers
+  vim.opt.number = false
+
+  -- copy (Cmd+C)
+  vim.keymap.set('v', '<D-c>', '"+y')
+
+  -- paste (Cmd+V)
+  vim.keymap.set('n', '<D-v>', '"+P')
+  vim.keymap.set('v', '<D-v>', '"-d"+P')
+  vim.keymap.set('c', '<D-v>', '<C-r>+')
+  vim.keymap.set('i', '<D-v>', '<C-r>+')
+end
