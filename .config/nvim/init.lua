@@ -134,15 +134,6 @@ vim.api.nvim_create_autocmd('FileType', {
 -- setup lazy.nvim
 local plugins = {
   {
-    'dhruvasagar/vim-prosession',
-    dependencies = {
-      'tpope/vim-obsession',
-    },
-    init = function()
-      vim.g.prosession_dir = '~/.local/share/nvim/sessions/'
-    end,
-  },
-  {
     'hrsh7th/nvim-cmp',
     dependencies = {
       'hrsh7th/cmp-buffer',
@@ -280,8 +271,6 @@ local plugins = {
     },
     event = { 'BufNewFile', 'BufReadPre' },
     config = function()
-      local lspconfig = require('lspconfig')
-      local util = require('lspconfig.util')
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
       local on_attach = function(_, bufnr)
@@ -298,41 +287,76 @@ local plugins = {
         map('gD', vim.lsp.buf.declaration, 'Go to declaration')
         map('gi', vim.lsp.buf.implementation, 'Go to implementation')
         map('gr', vim.lsp.buf.references, 'Show references')
-
+        map('gy', vim.lsp.buf.type_definition, 'Go to type definition')
         map('K', vim.lsp.buf.hover, 'Show hover information')
-        map('<C-k>', vim.lsp.buf.signature_help, 'Show signature help')
+        map('gs', vim.lsp.buf.signature_help, 'Show signature help')
 
-        map('1gD', vim.lsp.buf.type_definition, 'Go to type definition')
-        map('g0', vim.lsp.buf.document_symbol, 'Show document symbols')
-        map('gW', vim.lsp.buf.workspace_symbol, 'Show workspace symbols')
+        map('<leader>ds', vim.lsp.buf.document_symbol, 'Show document symbols')
+        map('<leader>ws', vim.lsp.buf.workspace_symbol, 'Show workspace symbols')
       end
 
-      lspconfig.intelephense.setup({
+      -- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/intelephense.lua
+      vim.lsp.config('intelephense', {
         capabilities = capabilities,
-        cmd = { 'intelephense', '--stdio' },
-        filetypes = { 'php' },
-        root_dir = util.root_pattern('composer.json', '.git'),
         settings = {
           intelephense = {
             files = {
               maxSize = 1000000,
+            },
+            telemetry = {
+              enabled = false,
             },
           },
         },
         on_attach = on_attach,
       })
 
-      lspconfig.ts_ls.setup({
+      -- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/ts_ls.lua
+      vim.lsp.config('ts_ls', {
         capabilities = capabilities,
         on_attach = on_attach,
       })
+
+      vim.lsp.enable({ 'intelephense', 'ts_ls' })
     end,
   },
   {
-    'notjedi/nvim-rooter.lua',
-    opts = {
-      rooter_patterns = { '.git' },
-    },
+    'nvim-mini/mini.sessions',
+    lazy = false,
+    config = function()
+      vim.o.sessionoptions = 'buffers,curdir,tabpages,winsize,help,terminal'
+
+      local sessions = require('mini.sessions')
+
+      local dir = vim.fn.expand('~/.local/share/nvim/sessions')
+      if vim.fn.isdirectory(dir) == 0 then
+        vim.fn.mkdir(dir, 'p')
+      end
+
+      sessions.setup({
+        autoread = false, -- will create own to use root-based name
+        autowrite = true,
+        directory = dir,
+        file = '', -- will use global session
+        verbose = { read = false, write = false, delete = true },
+      })
+
+      -- exit if nvim has arguments
+      if vim.fn.argc() > 0 then return end
+
+      local root = vim.fs.root(0, { '.git' }) or vim.fn.getcwd()
+      vim.cmd('cd ' .. vim.fn.fnameescape(root))
+
+      local name = root:gsub('[/\\: ]', '%%')
+
+      local session_path = dir .. '/' .. name
+
+      if vim.fn.filereadable(session_path) == 1 then
+        sessions.read(name)
+      else
+        sessions.write(name)
+      end
+    end,
   },
   {
     'rhysd/git-messenger.vim',
@@ -372,9 +396,7 @@ local plugins = {
 }
 
 require('lazy').setup({
-  spec = {
-    plugins,
-  },
+  spec = plugins,
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { 'habamax' } },
   -- automatically check for plugin updates
