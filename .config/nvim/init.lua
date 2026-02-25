@@ -1,3 +1,10 @@
+-- disable unused providers
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 -- bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -413,11 +420,24 @@ local plugins = {
 }
 
 require('lazy').setup({
-  spec = plugins,
-  -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { 'habamax' } },
   -- automatically check for plugin updates
-  checker = { enabled = true },
+  checker = {
+    enabled = true,
+  },
+  performance = {
+    -- disable built-in runtime plugins
+    rtp = {
+      disabled_plugins = {
+        'gzip',
+        'netrwPlugin',
+        'rplugin',
+        'tarPlugin',
+        'tohtml',
+        'zipPlugin',
+      },
+    },
+  },
+  spec = plugins,
 })
 
 -- neovide
