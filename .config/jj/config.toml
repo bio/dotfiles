@@ -1,0 +1,6 @@
+[user]
+name = "Valery Viktorovsky"
+email = "viktorovsky@gmail.com"
+
+[aliases]
+st = ["status"]
